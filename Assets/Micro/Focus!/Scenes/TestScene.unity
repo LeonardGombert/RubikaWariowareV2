@@ -387,7 +387,7 @@ MonoBehaviour:
   verticalLimitMode: 2
   leftoverText: 
   textMaterial: {fileID: 2100000, guid: e490a80c3724140c0ad176edb075a09e, type: 2}
-  textMesh: {fileID: 228692423}
+  textMesh: {fileID: 633764505}
   rawTopLeftBounds: {x: 322.4, y: -50, z: 0}
   rawBottomRightBounds: {x: -322.4, y: 50, z: 0}
   rawBottomRightTextBounds: {x: 156, y: -70, z: 0}
@@ -536,7 +536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c8061e55931daa47ae7fbb5a0fa7ee6, type: 3}
---- !u!43 &228692423
+--- !u!43 &633764505
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -946,9 +946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77edf665900cb9c4388a2358abc2326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Plane1List: []
-  Plane2List: []
-  Plane3List: []
+  Plane1List:
+  - {fileID: 1202851911}
+  Plane2List:
+  - {fileID: 1310308685}
+  Plane3List:
+  - {fileID: 2143434584}
 --- !u!114 &938853422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -964,7 +967,7 @@ MonoBehaviour:
   Plane1: {fileID: 0}
   Plane2: {fileID: 0}
   Plane3: {fileID: 0}
-  targetFocus: 50
+  targetFocus: 300
   minFocusMargin: 0
   maxFocusMargin: 0
   currentFocus: 0
@@ -990,7 +993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &966656574
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1152,8 +1155,8 @@ GameObject:
   - component: {fileID: 1202851912}
   - component: {fileID: 1202851914}
   - component: {fileID: 1202851913}
-  m_Layer: 0
-  m_Name: Plane1 Object
+  m_Layer: 8
+  m_Name: TestPerson
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1209,8 +1212,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -993239629
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1200d5935fa869f429ea5a8d38d6842a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1246,8 +1249,8 @@ GameObject:
   - component: {fileID: 1310308686}
   - component: {fileID: 1310308688}
   - component: {fileID: 1310308687}
-  m_Layer: 0
-  m_Name: Plane2 Object
+  m_Layer: 9
+  m_Name: TestSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1303,8 +1306,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 614266729
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ceb0db9d015d9074384bd538a25ed741, type: 3}
   m_Color: {r: 1, g: 0.95496154, b: 0, a: 1}
@@ -1771,8 +1774,8 @@ GameObject:
   - component: {fileID: 2143434585}
   - component: {fileID: 2143434587}
   - component: {fileID: 2143434586}
-  m_Layer: 0
-  m_Name: Plane3 Object
+  m_Layer: 10
+  m_Name: Empty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

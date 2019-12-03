@@ -10,7 +10,7 @@ public class FocalPlaneManager : MonoBehaviour
     [SerializeField] GameObject Plane2;
     [SerializeField] GameObject Plane3;
 
-    const int focalLength = 100;
+    const int focalLength = 300;
 
     int baseFocalRangeMin = 0;
     int baseFocalRangeMax= focalLength;
@@ -48,15 +48,16 @@ public class FocalPlaneManager : MonoBehaviour
         tweenTimeValue += Time.deltaTime;
 
         SetFocusValues();
-        EaseInOutQuadFocus();
+        //EaseInOutQuadFocus();
+        EaseInQuadFocus();
         FocusPostProcessing();
         CheckPlayerInput();
     }
 
     void SetFocusValues()
     {
-        minFocusMargin = targetFocus - 5 * baseFocalRangeMax / 100;
-        maxFocusMargin = targetFocus + 5 * baseFocalRangeMax / 100;
+        minFocusMargin = targetFocus - 5 * baseFocalRangeMax / focalLength;
+        maxFocusMargin = targetFocus + 5 * baseFocalRangeMax / focalLength;
     }
 
     void EaseInOutQuadFocus()
@@ -76,6 +77,30 @@ public class FocalPlaneManager : MonoBehaviour
             focalStartPosition = temp;
             tweenTimeValue = 0.0f;
         }
+    }
+
+    void EaseInQuadFocus()
+    {
+        distanceToFocalMax = focalEndPosition - focalStartPosition;
+
+        if (tweenTimeValue < totalTweenDuration)
+        {
+            currentFocus = TweenManager.EaseInQuad(tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
+            if (currentFocus == focalLength) currentFocus = TweenManager.EaseOutQuad (tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
+        }
+        if (tweenTimeValue > totalTweenDuration)
+        {
+            Debug.Log("I've finished Easing");
+            float temp = focalEndPosition;
+            focalEndPosition = focalStartPosition;
+            focalStartPosition = temp;
+            tweenTimeValue = 0.0f;
+        }
+    }
+
+    void EaseOutQuadFocus()
+    {
+
     }
 
     void CheckPlayerInput()
@@ -102,7 +127,7 @@ public class FocalPlaneManager : MonoBehaviour
 
             //Bloom Values
             depthOfFieldLayer.enabled.value = true;
-            depthOfFieldLayer.focusDistance.value = TweenManager.EaseInOutQuint(tweenTimeValue, a, c, totalTweenDuration);
+            depthOfFieldLayer.focusDistance.value = currentFocus; //TweenManager.EaseInOutQuint(tweenTimeValue, a, c, totalTweenDuration);
             if (depthOfFieldLayer.focusDistance.value == 300f)
             {
                 float temp = b;

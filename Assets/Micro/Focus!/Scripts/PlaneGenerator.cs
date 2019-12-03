@@ -52,7 +52,7 @@ public class PlaneGenerator : MonoBehaviour
             i++;
             foreach (GameObject item in subList)
             {
-                item.gameObject.tag = "Plane" + i;
+                item.gameObject.name = "Plane" + i + " Object";
             }
         }
     }
@@ -63,7 +63,7 @@ public class PlaneGenerator : MonoBehaviour
         foreach (GameObject item in targetObjects)
         {
             targetNumber++;
-            item.gameObject.name = "Target" + targetNumber;
-        }
+            item.gameObject.name = "Target";
+        }   
     }
 }
