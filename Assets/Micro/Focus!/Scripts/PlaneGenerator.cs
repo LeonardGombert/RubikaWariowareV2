@@ -35,7 +35,7 @@ public class PlaneGenerator : MonoBehaviour
 
         targetFocalPlane = Random.Range(0, MasterList.Count);
         targetObjects = MasterList[targetFocalPlane];
-        SendMessageToTargetFocalPlane();
+        //SendMessageToTargetFocalPlane();
     }
 
     // Update is called once per frame

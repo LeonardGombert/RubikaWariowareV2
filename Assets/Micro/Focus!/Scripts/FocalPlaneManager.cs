@@ -2,44 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using UnityStandardAssets.ImageEffects;
 
 public class FocalPlaneManager : MonoBehaviour
-{   
-    // FIND WHICH PLANES ARE WHICH
-    [SerializeField] GameObject Plane1;
-    [SerializeField] GameObject Plane2;
-    [SerializeField] GameObject Plane3;
+{
+    /*GAME LOGIC
+     * 
+     * 3 Plane Objects, plane manager assigns sprites to them
+     * 1 Plane is the "Target" plane
+     * Focus starts on a random plane (One of three int values)
+     * 
+     * FocusManager eases a currentFocus value between 0 and 100%
+     * The 3 planes individually change their blurAmount based on the currentFocus value
+     */
 
-    const int focalLength = 300;
 
-    int baseFocalRangeMin = 0;
-    int baseFocalRangeMax= focalLength;
-    [SerializeField] [Range(0, focalLength)] int targetFocus;
-    [SerializeField] [Range(0, focalLength)] int minFocusMargin;
-    [SerializeField] [Range(0, focalLength)] int maxFocusMargin;
-    [SerializeField] [Range(0, focalLength)] float currentFocus;
+    //FOCUS VALUES
+    //[SerializeField] float startFocus;
+    [SerializeField] [Range(0, 100)] float currentFocus;
+    [SerializeField] [Range(0, 100)] int minFocus = 0;
+    [SerializeField] [Range(0, 100)] int maxFocus = 100;
 
+    [SerializeField] GameObject test;
+    [SerializeField] BlurOptimized testBlur;
+    public float convertedCurrentFocus;
+    public int convertedCurrentFocus2;
+
+    //TWEEN VALUES
     float focalStartPosition;
     float focalEndPosition;
     float distanceToFocalMax;
     [SerializeField] float totalTweenDuration;
     float tweenTimeValue;
 
-    #region //POST PROCESSING
-    [SerializeField] List<PostProcessVolume> m_VolumeList = new List<PostProcessVolume>();
-    DepthOfField depthOfFieldLayer = null;
-    #endregion
-
     // Start is called before the first frame update
     void Awake()
     {
-        focalStartPosition = baseFocalRangeMin;
-        focalEndPosition = baseFocalRangeMax;
-
-        Plane1 = GameObject.Find("Plane1 Object");
-        Plane2 = GameObject.Find("Plane2 Object");
-        Plane3 = GameObject.Find("Plane3 Object");
-
+        focalStartPosition = minFocus;
+        focalEndPosition = maxFocus;
     }
 
     // Update is called once per frame
@@ -47,29 +47,34 @@ public class FocalPlaneManager : MonoBehaviour
     {
         tweenTimeValue += Time.deltaTime;
 
-        SetFocusValues();
         //EaseInOutQuadFocus();
+        UpdateBlurValues();
         EaseInQuadFocus();
-        FocusPostProcessing();
         CheckPlayerInput();
     }
 
-    void SetFocusValues()
+    void UpdateBlurValues()
     {
-        minFocusMargin = targetFocus - 5 * baseFocalRangeMax / focalLength;
-        maxFocusMargin = targetFocus + 5 * baseFocalRangeMax / focalLength;
+        if (currentFocus <= 10) testBlur.enabled = false;
+        else testBlur.enabled = true;
+
+        convertedCurrentFocus = (float)CustomScaler.Scale((int)currentFocus, minFocus, maxFocus, 0, 3);
+        testBlur.blurSize = convertedCurrentFocus;
+
+        convertedCurrentFocus2 = (int)CustomScaler.Scale((int)currentFocus, minFocus, maxFocus, 1, 2);
+        testBlur.blurIterations = convertedCurrentFocus2;
     }
 
     void EaseInOutQuadFocus()
     {
         distanceToFocalMax = focalEndPosition - focalStartPosition;
 
-        if (tweenTimeValue < totalTweenDuration)
+        if (tweenTimeValue <= totalTweenDuration)
         {
             currentFocus = TweenManager.EaseInOutQuint(tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
         }
 
-        if (tweenTimeValue > totalTweenDuration)
+        if (tweenTimeValue >= totalTweenDuration)
         {
             Debug.Log("I've finished Easing");
             float temp = focalEndPosition;
@@ -86,7 +91,7 @@ public class FocalPlaneManager : MonoBehaviour
         if (tweenTimeValue < totalTweenDuration)
         {
             currentFocus = TweenManager.EaseInQuad(tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
-            if (currentFocus == focalLength) currentFocus = TweenManager.EaseOutQuad (tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
+            if (currentFocus == maxFocus) currentFocus = TweenManager.EaseOutQuad (tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
         }
         if (tweenTimeValue > totalTweenDuration)
         {
@@ -98,50 +103,14 @@ public class FocalPlaneManager : MonoBehaviour
         }
     }
 
-    void EaseOutQuadFocus()
-    {
-
-    }
-
     void CheckPlayerInput()
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (currentFocus >= minFocusMargin && currentFocus <= maxFocusMargin)
+            /*if (currentFocus >= minFocusMargin && currentFocus <= maxFocusMargin)
             {
                 Debug.Log("Sucess!");
-            }
-        }
-    }
-
-    void FocusPostProcessing()
-    {
-        foreach (PostProcessVolume m_Volume in m_VolumeList)
-        {
-            m_Volume.profile.TryGetSettings(out depthOfFieldLayer);
-
-            float a = depthOfFieldLayer.focusDistance.value;
-            float b = 300f;
-
-            float c = b - a;
-
-            //Bloom Values
-            depthOfFieldLayer.enabled.value = true;
-            depthOfFieldLayer.focusDistance.value = currentFocus; //TweenManager.EaseInOutQuint(tweenTimeValue, a, c, totalTweenDuration);
-            if (depthOfFieldLayer.focusDistance.value == 300f)
-            {
-                float temp = b;
-                b = a;
-                a = temp;
-                a = 0.1f;
-            }
-
-            /*
-             * PLUS LA VALEUR CURRENT FOCUS SE RAPPROCHE DE TARGET FOCUS, PLUS LA VALEUR FOCAL LENGTH DOIT SE RAPPROCHER DE FOCUS DISTANCE
-             * focus distance = 150
-             * focal length = Lerp(300, 150, totalTweenDuration)
-             * if startValue = 150, *flip*
-             */
+            }*/
         }
     }
 }
