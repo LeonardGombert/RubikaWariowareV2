@@ -47,10 +47,46 @@ public class FocalPlaneManager : MonoBehaviour
     {
         tweenTimeValue += Time.deltaTime;
 
-        //EaseInOutQuadFocus();
+        VectorDrawer();
+
         UpdateBlurValues();
         EaseInQuadFocus();
         CheckPlayerInput();
+    }
+
+    void VectorDrawer()
+    {
+        Vector2 currentFocusVector = new Vector2(0, 0);
+
+        Vector2 Center = new Vector2(0, 0);
+        Vector2 Ord = new Vector2(0, 5);
+        Vector2 Abs = new Vector2(5, 0);
+
+        Vector2 testVector1 = new Vector2(0, 0);
+        Vector2 testVector2 = new Vector2(1.5f, 1);
+        Vector2 testVector3 = new Vector2(3,0);
+
+        Debug.DrawLine(Center, Ord, Color.green);
+        Debug.DrawLine(Center, Abs, Color.green);
+
+        Debug.DrawLine(testVector1, testVector2, Color.red);
+        Debug.DrawLine(testVector2, testVector3, Color.red);
+
+        if(currentFocusVector.x <= Abs.x)
+        {
+            currentFocusVector.x += 0.1f;
+            bool moveBack = false;
+
+            if (currentFocusVector.x >= Abs.x) moveBack = true;
+
+            if (moveBack)
+            {
+                currentFocusVector.x -= 0.1f;
+                if (currentFocusVector.x <= 0) moveBack = false;
+            }
+        }
+
+        test.transform.position = currentFocusVector;
     }
 
     void UpdateBlurValues()

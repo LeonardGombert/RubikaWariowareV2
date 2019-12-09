@@ -13,9 +13,9 @@ TagManager:
   - UI
   - 
   - 
-  - Plane1
-  - Plane2
-  - Plane3
+  - Foreground
+  - MiddleGround
+  - Background
   - 
   - 
   - 
