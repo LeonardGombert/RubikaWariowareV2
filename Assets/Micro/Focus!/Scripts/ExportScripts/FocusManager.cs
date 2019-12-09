@@ -25,6 +25,7 @@ namespace Game.Focus
         [FoldoutGroup("AssignObjects")] [SerializeField] GameObject foregroundGameobject;
         [FoldoutGroup("AssignObjects")] [SerializeField] GameObject middlegroundGameobject;
         [FoldoutGroup("AssignObjects")] [SerializeField] GameObject backgroundGameobject;
+        [FoldoutGroup("AssignObjects")] [SerializeField] GameObject targetPlane;
 
         //GameObject Positions on Graph
         [FoldoutGroup("Positions")] [SerializeField] Vector2 foreGoPosition;
@@ -33,19 +34,7 @@ namespace Game.Focus
         [FoldoutGroup("Positions")] [SerializeField] bool shouldMove;
 
         //BLUR VALUES
-        [FoldoutGroup("AssignObjects")] [SerializeField] Camera foreGrDOF;
-        [FoldoutGroup("AssignObjects")] [SerializeField] Camera middGrDOF;
-        [FoldoutGroup("AssignObjects")] [SerializeField] Camera backGrDOF;
         [FoldoutGroup("AssignObjects")] [SerializeField] DepthOfField generalCam;
-
-        [FoldoutGroup("BlurValues")] [SerializeField] float convertedForeFocalLength;
-        [FoldoutGroup("BlurValues")] [SerializeField] int convertedForeBlurIte;
-
-        [FoldoutGroup("BlurValues")] [SerializeField] float convertedMiddBlurSize;
-        [FoldoutGroup("BlurValues")] [SerializeField] int convertedMiddBlurIte;
-
-        [FoldoutGroup("BlurValues")] [SerializeField] float convertedBackBlurSize;
-        [FoldoutGroup("BlurValues")] [SerializeField] int convertedBackBlurIte;
 
         [FoldoutGroup("BlurValuesPercentages")] [SerializeField] [Range(0, 100)] float foreGoBlurPercentage;
         [FoldoutGroup("BlurValuesPercentages")] [SerializeField] [Range(0, 100)] float middGoBlurPercentage;
@@ -76,6 +65,7 @@ namespace Game.Focus
             EaseInOutQuadFocus();
             UpdateAbsoluteValue();
             ConvertPositionToDOF();
+            CheckPlayerInput();
         }
         #endregion
 
@@ -142,25 +132,50 @@ namespace Game.Focus
             foreGoBlurPercentage = 100 - foreGoPosition.y;
             middGoBlurPercentage = 100 - midGoPosition.y;
             backGoBlurPercentage = 100 - backGoPosition.y;
-            /*
-            foreGoBlurPercentage = 100 - foreGoPosition.y;
-            if (foreGoPosition.y >= 90 && foreGoPosition.y <= 100) foreGrDOF.enabled = false;
-                else foreGrDOF.enabled = true;
-            convertedForeFocalLength = (float)CustomScaler.Scale((int)foreGoBlurPercentage, 0, 100, 0, 5);
-            foreGrDOF.depth = convertedForeFocalLength;
-
-            middGoBlurPercentage = 100 - midGoPosition.y;
-            if (middGoBlurPercentage >= 90 && middGoBlurPercentage <= 100) middGrDOF.enabled = false;
-                else middGrDOF.enabled = true;
-            convertedMiddBlurSize = (float)CustomScaler.Scale((int)middGoBlurPercentage, 0, 100, 5, 10);
-            middGrDOF.depth = convertedMiddBlurSize;
-
-            backGoBlurPercentage = 100 - backGoPosition.y;
-            if (backGoBlurPercentage >= 90 && backGoBlurPercentage <= 100) backGrDOF.enabled = false;
-                else backGrDOF.enabled = true;
-            convertedBackBlurSize = (float)CustomScaler.Scale((int)backGoBlurPercentage, 0, 100, 10, 15);
-            backGrDOF.depth = convertedBackBlurSize;*/
         }
+
+        void CheckPlayerInput()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if(targetPlane == foregroundGameobject)
+                {
+                    if (currentFocus >= 0 && currentFocus <= 10)
+                    {
+                        Debug.Log("Sucess!");
+                    }
+                    else
+                    {
+                        Debug.Log("Fail");
+                    }
+                }
+
+                if (targetPlane == middlegroundGameobject)
+                {
+                    if (currentFocus >= 95 && currentFocus <= 105)
+                    {
+                        Debug.Log("Sucess!");
+                    }
+                    else
+                    {
+                        Debug.Log("Fail");
+                    }
+                }
+
+                else if (targetPlane == backgroundGameobject)
+                {
+                    if (currentFocus >= 190 && currentFocus <= 200)
+                    {
+                        Debug.Log("Sucess!");
+                    }
+                    else
+                    {
+                        Debug.Log("Fail");
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }
