@@ -14,15 +14,11 @@ namespace Game.MonkeynAround
         public enum currentDifficulty { difficulty1, difficulty2, difficulty3 };
         [SerializeField] currentDifficulty currDifficulty;
 
-        void Start()
-        {
-
-        }
 
         protected override void OnGameStart()
         {
-            Macro.DisplayActionVerb("SLAM !", 3);
             base.OnGameStart();
+            Macro.DisplayActionVerb("SLAM !", 3);
             if (Macro.Difficulty == 1) currDifficulty = currentDifficulty.difficulty1;
             if (Macro.Difficulty == 2) currDifficulty = currentDifficulty.difficulty2;
             if (Macro.Difficulty == 3) currDifficulty = currentDifficulty.difficulty3;

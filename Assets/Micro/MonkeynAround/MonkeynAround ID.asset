@@ -17,8 +17,8 @@ MonoBehaviour:
   verb: 
   serieConstraints: 0
   scene:
-    m_SceneAsset: {fileID: 0}
-    m_SceneName: 
+    m_SceneAsset: {fileID: 102900000, guid: 412990d1657ffec46839402e738375b9, type: 3}
+    m_SceneName: ExportScene
   designer: "L\xE9onard Gombert"
   programmer: Matthieu Chapeland
   thumbnail: {fileID: 0}

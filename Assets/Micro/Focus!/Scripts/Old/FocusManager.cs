@@ -180,12 +180,6 @@ namespace Game.Focus
             {
                 switch (moveToTarget)
                 {
-                    /*case whereToMove.moveToFore:
-                        startPosition = basePosition2;
-                        endPosition = basePosition2;
-                        moveToTarget = whereToMove.moveToMid;
-                        tweenTimeValue = 0.0f;
-                        break;*/
                     case whereToMove.moveToMid:
                         startPosition = basePosition1;
                         endPosition = basePosition2;

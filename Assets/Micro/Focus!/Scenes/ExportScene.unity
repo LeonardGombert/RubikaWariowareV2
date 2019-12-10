@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 238922763}
   - component: {fileID: 238922764}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: DOFCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,31 +378,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 755228277}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 473b9ded1cc32a14ea0431bfaabeaa6f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0636e2e6579d748478aaa6b30474c7dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentFocus: 0
-  minFocus: 0
-  maxFocus: 200
-  totalTweenDuration: 1
-  tweenTimeValue: 0
-  foregroundGameobject: {fileID: 1711785855}
-  middlegroundGameobject: {fileID: 1227182736}
-  backgroundGameobject: {fileID: 1305341224}
-  targetPlane: {fileID: 1711785855}
-  foreGoPosition: {x: 0, y: 0}
-  midGoPosition: {x: 0, y: 0}
-  backGoPosition: {x: 0, y: 0}
-  shouldMove: 0
-  generalCam: {fileID: 238922763}
-  foreGoBlurPercentage: 0
-  middGoBlurPercentage: 0
-  backGoBlurPercentage: 0
-  foreToMidDistance: 0
-  midToBackDistance: 0
-  focusPointCurrentDepth: 0
+  totalTweenDuration: 0
   focusDepthPercentage: 0
-  focusPointTransform: {fileID: 1878528516}
 --- !u!1 &1227182736
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +394,7 @@ GameObject:
   - component: {fileID: 1227182738}
   - component: {fileID: 1227182737}
   m_Layer: 0
-  m_Name: MiddleGround
+  m_Name: Middleground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -722,7 +702,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2109857371
 MonoBehaviour:
   m_ObjectHideFlags: 0
