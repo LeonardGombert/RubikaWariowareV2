@@ -44,6 +44,17 @@ namespace Game.Focus
         Vector3 basePosition2;
         Vector3 basePosition3;
 
+        Vector3 startPosition;
+        Vector3 targetPosition;
+        Vector3 endPosition;
+        Vector3 distanceToEnd;
+
+        [FoldoutGroup("AssignObjects")][SerializeField] Transform transformFocus;
+
+        [SerializeField] enum whereToMove { moveToFore, moveToMid, moveToBack, moveToMidb, moveToForeb };
+
+        whereToMove moveToTarget;
+
         //Macro Variables
         private bool isGameStarted = false;
         #endregion
@@ -57,15 +68,17 @@ namespace Game.Focus
             basePosition1 = foregroundGameobject.transform.position;
             basePosition2 = middlegroundGameobject.transform.position;
             basePosition3 = backgroundGameobject.transform.position;
+
+            moveToTarget = whereToMove.moveToMid;
         }
 
         private void Update()
         {
             tweenTimeValue += Time.deltaTime;
-            EaseInOutQuadFocus();
-            UpdateAbsoluteValue();
+            //UpdateAbsoluteValue();
             ConvertPositionToDOF();
-            CheckPlayerInput();
+            PlayerInputs();
+            TweenLerpFocusPoint();
         }
         #endregion
 
@@ -80,13 +93,13 @@ namespace Game.Focus
         #endregion
 
         #region //CUSTOM FUNCTIONS
-        void EaseInOutQuadFocus()
+        void EaseInOutQuintFocus()
         {
             distanceToFocalMax = focalEndPosition - focalStartPosition;
 
             if (tweenTimeValue <= totalTweenDuration)
             {
-                currentFocus = TweenManager.EaseInOutQuad(tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
+                currentFocus = TweenManager.EaseInOutQuint(tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
             }
 
             if (tweenTimeValue >= totalTweenDuration)
@@ -125,16 +138,80 @@ namespace Game.Focus
             }
         }
 
-        void ConvertPositionToDOF()
+        void TweenLerpFocusPoint()
         {
-            generalCam.focalLength = (float)CustomScaler.Scale((int)currentFocus, minFocus, maxFocus, 5, 15);
-            foreGoBlurPercentage = 100 - foreGoPosition.y;
-            middGoBlurPercentage = 100 - midGoPosition.y;
-            backGoBlurPercentage = 100 - backGoPosition.y;
+            distanceToEnd = endPosition - startPosition;
+
+            if (tweenTimeValue <= totalTweenDuration)
+            {
+                transformFocus.position = 
+                    new Vector3(0, TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.y, distanceToEnd.y, totalTweenDuration), 
+                    TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.z, distanceToEnd.z, totalTweenDuration));
+            }
+
+            if (tweenTimeValue >= totalTweenDuration)
+            {
+                switch (moveToTarget)
+                {
+                    /*case whereToMove.moveToFore:
+                        startPosition = basePosition2;
+                        endPosition = basePosition2;
+                        moveToTarget = whereToMove.moveToMid;
+                        tweenTimeValue = 0.0f;
+                        break;*/
+                    case whereToMove.moveToMid:
+                        startPosition = basePosition1;
+                        endPosition = basePosition2;
+                        moveToTarget = whereToMove.moveToBack;
+                        tweenTimeValue = 0.0f;
+                        break;
+                    case whereToMove.moveToBack:
+                        startPosition = basePosition2;
+                        endPosition = basePosition3;
+                        moveToTarget = whereToMove.moveToMidb;
+                        tweenTimeValue = 0.0f;
+                        break;
+                    case whereToMove.moveToMidb:
+                        startPosition = basePosition3;
+                        endPosition = basePosition2;
+                        tweenTimeValue = 0.0f;
+                        break;
+                    case whereToMove.moveToForeb:
+                        startPosition = basePosition2;
+                        endPosition = basePosition1;
+                        moveToTarget = whereToMove.moveToFore;
+                        tweenTimeValue = 0.0f;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
-        void CheckPlayerInput()
+        void ConvertPositionToDOF()
         {
+            generalCam.focalTransform = transformFocus;
+            /*generalCam.focalLength = (float)CustomScaler.Scale((int)currentFocus, minFocus, maxFocus, 5, 15);
+            foreGoBlurPercentage = 100 - foreGoPosition.y;
+            middGoBlurPercentage = 100 - midGoPosition.y;
+            backGoBlurPercentage = 100 - backGoPosition.y;*/
+        }
+
+        void PlayerInputs()
+        {
+            if(Input.GetKeyDown(KeyCode.A))
+            {
+                transformFocus = foregroundGameobject.transform;
+            }
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                transformFocus = middlegroundGameobject.transform;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                transformFocus = backgroundGameobject.transform;
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 if(targetPlane == foregroundGameobject)

@@ -146,12 +146,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.57159096, y: 5.2836423, z: -7.325}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1645666447}
-  - {fileID: 1879723774}
-  - {fileID: 755228278}
+  m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &238922762
 GameObject:
@@ -166,7 +163,7 @@ GameObject:
   - component: {fileID: 238922763}
   - component: {fileID: 238922764}
   m_Layer: 0
-  m_Name: ALLCAM
+  m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,12 +257,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238922762}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1879723774}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &515324083
 GameObject:
@@ -366,11 +363,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 755228277}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.57159096, y: -5.2836423, z: 7.325}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 218838412}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &755228279
 MonoBehaviour:
@@ -381,7 +378,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 755228277}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce1c3b93979404b40b43b911dd8f5399, type: 3}
+  m_Script: {fileID: 11500000, guid: 473b9ded1cc32a14ea0431bfaabeaa6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentFocus: 0
@@ -401,6 +398,7 @@ MonoBehaviour:
   foreGoBlurPercentage: 0
   middGoBlurPercentage: 0
   backGoBlurPercentage: 0
+  transformFocus: {fileID: 1878528516}
 --- !u!1 &1227182736
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,7 +409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1227182738}
   - component: {fileID: 1227182737}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: MiddleGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -491,7 +489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1305341226}
   - component: {fileID: 1305341225}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -571,7 +569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1645666447}
   m_Layer: 0
-  m_Name: LAYERS
+  m_Name: Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -585,14 +583,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1645666446}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.57159096, y: -5.2836423, z: 7.325}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1711785857}
   - {fileID: 1227182738}
   - {fileID: 1305341226}
-  m_Father: {fileID: 218838412}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1711785855
 GameObject:
@@ -604,7 +602,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1711785857}
   - component: {fileID: 1711785856}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -674,7 +672,7 @@ Transform:
   m_Father: {fileID: 1645666447}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1879723773
+--- !u!1 &1878528515
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -682,28 +680,27 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1879723774}
+  - component: {fileID: 1878528516}
   m_Layer: 0
-  m_Name: CAMERAS
+  m_Name: FocusPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1879723774
+--- !u!4 &1878528516
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1879723773}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.57159096, y: -5.2836423, z: 7.325}
+  m_GameObject: {fileID: 1878528515}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.07, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 238922766}
-  m_Father: {fileID: 218838412}
-  m_RootOrder: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2109857370
 GameObject:
