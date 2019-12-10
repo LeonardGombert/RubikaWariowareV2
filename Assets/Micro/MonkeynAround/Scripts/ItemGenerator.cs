@@ -10,32 +10,63 @@ namespace Game.MonkeynAround
         [SerializeField] List<GameObject> difficulty1List = new List<GameObject>();
         [SerializeField] List<GameObject> difficulty2List = new List<GameObject>();
         [SerializeField] List<GameObject> difficulty3List = new List<GameObject>();
-        [SerializeField] float timeToWait;
-        [SerializeField] float timePassed;
+        int beatsPassed;
+        public enum currentDifficulty { difficulty1, difficulty2, difficulty3 };
+        [SerializeField] currentDifficulty currDifficulty;
 
-        [SerializeField] bool difficulty1;
-        [SerializeField] bool difficulty2;
-        [SerializeField] bool difficulty3;
-
-        // Start is called before the first frame update
         void Start()
         {
 
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override void OnGameStart()
         {
-            timePassed += Time.deltaTime;
+            Macro.DisplayActionVerb("SLAM !", 3);
+            base.OnGameStart();
+            if (Macro.Difficulty == 1) currDifficulty = currentDifficulty.difficulty1;
+            if (Macro.Difficulty == 2) currDifficulty = currentDifficulty.difficulty2;
+            if (Macro.Difficulty == 3) currDifficulty = currentDifficulty.difficulty3;
+            Macro.StartTimer(15);
+        }
 
-            if (timePassed >= timeToWait)
+        protected override void OnBeat()
+        {
+            base.OnBeat();
+            beatsPassed++;
+
+            switch(currDifficulty)
             {
-                if (difficulty1) Instantiate(difficulty1List[Random.Range(0, difficulty1List.Count)], this.transform.position, Quaternion.identity);
-                else if (difficulty2) Instantiate(difficulty2List[Random.Range(0, difficulty2List.Count)], this.transform.position, Quaternion.identity);
-                else if (difficulty3) Instantiate(difficulty3List[Random.Range(0, difficulty3List.Count)], this.transform.position, Quaternion.identity);
-
-                timePassed = 0;
+                case currentDifficulty.difficulty1:
+                    if (beatsPassed >= 3)
+                    {
+                        Instantiate(difficulty1List[Random.Range(0, difficulty1List.Count)], this.transform.position, Quaternion.identity);
+                        beatsPassed = 0;
+                    }
+                    break;
+                case currentDifficulty.difficulty2:
+                    if (beatsPassed >= 2)
+                    {
+                        Instantiate(difficulty2List[Random.Range(0, difficulty2List.Count)], this.transform.position, Quaternion.identity);
+                        beatsPassed = 0;
+                    }
+                    break;
+                case currentDifficulty.difficulty3:
+                    if (beatsPassed >= 1)
+                    {
+                        Instantiate(difficulty3List[Random.Range(0, difficulty3List.Count)], this.transform.position, Quaternion.identity);
+                        beatsPassed = 0;
+                    }
+                    break;
+                default:
+                    break;
             }
+        }
+
+        protected override void OnTimerEnd()
+        {
+            base.OnTimerEnd();
+            Macro.EndGame();
+            Macro.Win();
         }
     }
 }

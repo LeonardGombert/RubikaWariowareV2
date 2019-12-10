@@ -58,7 +58,11 @@ namespace Game.MonkeynAround
         void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.name == "Fists" && this.gameObject.name == "COCONUT") Destroy(gameObject);
-            if (collision.gameObject.name == "Fists" && gameObject.name == "DONT DESTROY") Debug.Log("You Lose");
+            if (collision.gameObject.name == "Fists" && gameObject.name == "DONT DESTROY")
+            {
+                Debug.Log("You Lose");
+                Macro.Lose();
+            }
         }
     }
 }
