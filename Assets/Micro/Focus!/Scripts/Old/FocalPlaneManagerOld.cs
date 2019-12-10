@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityStandardAssets.ImageEffects;
+using Game.Focus;
 
 public class FocalPlaneManagerOld : MonoBehaviour
 {   

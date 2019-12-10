@@ -89,7 +89,6 @@ namespace Game.Focus
                 currentFocus = TweenManager.EaseInOutQuad(tweenTimeValue, focalStartPosition, distanceToFocalMax, totalTweenDuration);
             }
 
-
             if (tweenTimeValue >= totalTweenDuration)
             {
                 Debug.Log("I've finished Easing");

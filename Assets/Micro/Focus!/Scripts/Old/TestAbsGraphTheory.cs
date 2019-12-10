@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 using UnityEngine.Rendering.PostProcessing;
 using Sirenix.OdinInspector;
+using Game.Focus;
 
 public class TestAbsGraphTheory : MonoBehaviour
 {
