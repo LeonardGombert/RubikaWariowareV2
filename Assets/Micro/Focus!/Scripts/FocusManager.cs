@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 using Sirenix.OdinInspector;
+using System;
 
 namespace Game.Focus
 {
@@ -49,7 +50,16 @@ namespace Game.Focus
         Vector3 endPosition;
         Vector3 distanceToEnd;
 
-        [FoldoutGroup("AssignObjects")][SerializeField] Transform transformFocus;
+        [SerializeField] float foreToMidDistance;
+        [SerializeField] float midToBackDistance;
+        [SerializeField] float focusPointCurrentDepth;
+        [SerializeField] float foreGroundMargin;
+        [SerializeField] float middleGroundMargin1;
+        [SerializeField] float middleGroundMargin2;
+        [SerializeField] float backGroundMargin;
+        [SerializeField][Range(0, 100)] float focusDepthPercentage;
+
+        [FoldoutGroup("AssignObjects")][SerializeField] Transform focusPointTransform;
 
         [SerializeField] enum whereToMove { moveToFore, moveToMid, moveToBack, moveToMidb, moveToForeb };
 
@@ -69,16 +79,33 @@ namespace Game.Focus
             basePosition2 = middlegroundGameobject.transform.position;
             basePosition3 = backgroundGameobject.transform.position;
 
-            moveToTarget = whereToMove.moveToMid;
+
+            startPosition = basePosition1;
+            endPosition = basePosition2;
+            moveToTarget = whereToMove.moveToBack;
+
+            foreToMidDistance = middlegroundGameobject.transform.position.z + foregroundGameobject.transform.position.z;
+            midToBackDistance = backgroundGameobject.transform.position.z - middlegroundGameobject.transform.position.z;
         }
 
         private void Update()
         {
+            focusPointCurrentDepth = focusPointTransform.transform.position.z;
             tweenTimeValue += Time.deltaTime;
-            //UpdateAbsoluteValue();
-            ConvertPositionToDOF();
-            PlayerInputs();
             TweenLerpFocusPoint();
+            ConvertPositionToDOF();
+            ConvertCameraDepthToPercentage();
+            PlayerInputs();
+        }
+
+        void ConvertCameraDepthToPercentage()
+        {
+            focusDepthPercentage = focusPointCurrentDepth / backgroundGameobject.transform.position.z * 100;
+
+            foreGroundMargin = foregroundGameobject.transform.position.z + foreToMidDistance * .1f;
+            middleGroundMargin1 = middlegroundGameobject.transform.position.z - foreToMidDistance * .05f;
+            middleGroundMargin2 = middlegroundGameobject.transform.position.z + midToBackDistance * .05f;
+            backGroundMargin = backgroundGameobject.transform.position.z - midToBackDistance * .1f;
         }
         #endregion
 
@@ -144,7 +171,7 @@ namespace Game.Focus
 
             if (tweenTimeValue <= totalTweenDuration)
             {
-                transformFocus.position = 
+                focusPointTransform.position = 
                     new Vector3(0, TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.y, distanceToEnd.y, totalTweenDuration), 
                     TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.z, distanceToEnd.z, totalTweenDuration));
             }
@@ -174,12 +201,13 @@ namespace Game.Focus
                     case whereToMove.moveToMidb:
                         startPosition = basePosition3;
                         endPosition = basePosition2;
+                        moveToTarget = whereToMove.moveToForeb;
                         tweenTimeValue = 0.0f;
                         break;
                     case whereToMove.moveToForeb:
                         startPosition = basePosition2;
                         endPosition = basePosition1;
-                        moveToTarget = whereToMove.moveToFore;
+                        moveToTarget = whereToMove.moveToMid;
                         tweenTimeValue = 0.0f;
                         break;
                     default:
@@ -190,7 +218,7 @@ namespace Game.Focus
 
         void ConvertPositionToDOF()
         {
-            generalCam.focalTransform = transformFocus;
+            generalCam.focalTransform = focusPointTransform;
             /*generalCam.focalLength = (float)CustomScaler.Scale((int)currentFocus, minFocus, maxFocus, 5, 15);
             foreGoBlurPercentage = 100 - foreGoPosition.y;
             middGoBlurPercentage = 100 - midGoPosition.y;
@@ -199,55 +227,24 @@ namespace Game.Focus
 
         void PlayerInputs()
         {
-            if(Input.GetKeyDown(KeyCode.A))
-            {
-                transformFocus = foregroundGameobject.transform;
-            }
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                transformFocus = middlegroundGameobject.transform;
-            }
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                transformFocus = backgroundGameobject.transform;
-            }
-
             if (Input.GetMouseButtonDown(0))
             {
                 if(targetPlane == foregroundGameobject)
                 {
-                    if (currentFocus >= 0 && currentFocus <= 10)
-                    {
-                        Debug.Log("Sucess!");
-                    }
-                    else
-                    {
-                        Debug.Log("Fail");
-                    }
+                    if (focusPointCurrentDepth >= foregroundGameobject.transform.position.z && focusPointCurrentDepth <= foreGroundMargin) Debug.Log("Sucess!");
+                    else Debug.Log("Fail");
                 }
 
                 if (targetPlane == middlegroundGameobject)
                 {
-                    if (currentFocus >= 95 && currentFocus <= 105)
-                    {
-                        Debug.Log("Sucess!");
-                    }
-                    else
-                    {
-                        Debug.Log("Fail");
-                    }
+                    if (focusPointCurrentDepth >= middleGroundMargin1 && focusPointCurrentDepth <= middleGroundMargin2) Debug.Log("Sucess!");
+                    else Debug.Log("Fail");
                 }
 
                 else if (targetPlane == backgroundGameobject)
                 {
-                    if (currentFocus >= 190 && currentFocus <= 200)
-                    {
-                        Debug.Log("Sucess!");
-                    }
-                    else
-                    {
-                        Debug.Log("Fail");
-                    }
+                    if (focusPointCurrentDepth >= backGroundMargin && focusPointCurrentDepth <= backgroundGameobject.transform.position.z) Debug.Log("Sucess!");
+                    else Debug.Log("Fail");
                 }
             }
         }
