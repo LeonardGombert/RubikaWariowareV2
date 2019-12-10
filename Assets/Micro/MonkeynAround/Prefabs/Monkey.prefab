@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 7800203825019097260}
   - component: {fileID: 5262707695211909666}
   m_Layer: 0
-  m_Name: Object1
+  m_Name: Monkey
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -46,7 +46,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491ec064a3450b846800dac1ca97f8a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  rb2D: {fileID: 0}
+  boxcoll2D: {fileID: 0}
   speed: 2
+  time: 0
+  change: {x: 0, y: 0, z: 0}
+  startPosition: {x: 0, y: 0, z: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  duration: 2
+  myType: 1
 --- !u!212 &7748175261534956851
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -86,7 +95,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6b10f0c3f8b0349429fd44064fb702b0, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.06265998, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

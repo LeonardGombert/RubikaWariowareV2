@@ -3,26 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class ItemGenerator : MonoBehaviour
+namespace Game.MonkeynAround
 {
-    [SerializeField] List<GameObject> itemsToSpawnList = new List<GameObject>();
-    [SerializeField] float timeToWait;
-    float timePassed;
-    // Start is called before the first frame update
-    void Start()
+    public class ItemGenerator : MicroMonoBehaviour
     {
-        
-    }
+        [SerializeField] List<GameObject> difficulty1List = new List<GameObject>();
+        [SerializeField] List<GameObject> difficulty2List = new List<GameObject>();
+        [SerializeField] List<GameObject> difficulty3List = new List<GameObject>();
+        [SerializeField] float timeToWait;
+        [SerializeField] float timePassed;
 
-    // Update is called once per frame
-    void Update()
-    {
-        timePassed += Time.deltaTime;
+        [SerializeField] bool difficulty1;
+        [SerializeField] bool difficulty2;
+        [SerializeField] bool difficulty3;
 
-        if(timePassed >= timeToWait)
+        // Start is called before the first frame update
+        void Start()
         {
-            Instantiate(itemsToSpawnList[Random.Range(0, itemsToSpawnList.Count)], this.transform.position, Quaternion.identity);
-            timePassed = 0;
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            timePassed += Time.deltaTime;
+
+            if (timePassed >= timeToWait)
+            {
+                if (difficulty1) Instantiate(difficulty1List[Random.Range(0, difficulty1List.Count)], this.transform.position, Quaternion.identity);
+                else if (difficulty2) Instantiate(difficulty2List[Random.Range(0, difficulty2List.Count)], this.transform.position, Quaternion.identity);
+                else if (difficulty3) Instantiate(difficulty3List[Random.Range(0, difficulty3List.Count)], this.transform.position, Quaternion.identity);
+
+                timePassed = 0;
+            }
         }
     }
 }
