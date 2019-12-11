@@ -12,7 +12,7 @@ namespace Game.Focus
         [SerializeField] enum whereToMove { moveToFore, moveToMid, moveToBack, moveToMidb, moveToForeb };
         whereToMove moveToTarget;
         //TWEEN VALUES
-        [SerializeField] float totalTweenDuration;
+        [SerializeField] float focusTweenDuration;
         float tweenTimeValue;
         Vector3 startPosition;
         Vector3 targetPosition;
@@ -42,6 +42,8 @@ namespace Game.Focus
         float backGroundMargin;
         [SerializeField][Range(0, 100)] float focusDepthPercentage;
 
+        bool hasTime = false;
+        int beatsPassed;
         #endregion
 
         #region //MONOBEHAVIOR CALLBACKS
@@ -84,10 +86,6 @@ namespace Game.Focus
         {
             Macro.DisplayActionVerb("Focus !", 3);
             Macro.StartTimer(16);
-            double temp = Macro.TimeBeforeNextBeat;
-            double tweenDurationNigg = temp * 2;
-            Debug.Log(tweenDurationNigg);
-            totalTweenDuration = (float)tweenDurationNigg;
             base.OnGameStart();
         }   
 
@@ -95,6 +93,29 @@ namespace Game.Focus
         {
             Macro.EndGame();
             base.OnTimerEnd();
+        }
+
+        protected override void OnBeat()
+        {
+            base.OnBeat();
+            beatsPassed++;
+
+            Debug.Log(Macro.TimeBeforeNextBeat);
+
+            if (!hasTime)
+            {
+                float timeToNextBeat = (float)Macro.TimeSinceLastBeat;
+                float timeToTwoBeats = timeToNextBeat * 2;
+                focusTweenDuration = timeToTwoBeats;
+                Debug.Log(focusTweenDuration);
+                hasTime = true;
+            }
+
+            if(beatsPassed == 2)
+            {
+                beatsPassed = 0;
+                hasTime = false;
+            }
         }
         #endregion
 
@@ -111,14 +132,14 @@ namespace Game.Focus
         {
             distanceToEnd = endPosition - startPosition;
 
-            if (tweenTimeValue <= totalTweenDuration)
+            if (tweenTimeValue <= focusTweenDuration)
             {
                 focusPointTransform.position = 
-                    new Vector3(0, TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.y, distanceToEnd.y, totalTweenDuration), 
-                    TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.z, distanceToEnd.z, totalTweenDuration));
+                    new Vector3(0, TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.y, distanceToEnd.y, focusTweenDuration), 
+                    TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.z, distanceToEnd.z, focusTweenDuration));
             }
 
-            if (tweenTimeValue >= totalTweenDuration)
+            if (tweenTimeValue >= focusTweenDuration)
             {
                 switch (moveToTarget)
                 {
