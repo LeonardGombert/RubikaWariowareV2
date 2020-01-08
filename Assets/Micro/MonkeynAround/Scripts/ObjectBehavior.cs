@@ -62,6 +62,7 @@ namespace Game.MonkeynAround
             {
                 Debug.Log("You Lose");
                 Macro.Lose();
+                Macro.EndGame();
             }
         }
     }

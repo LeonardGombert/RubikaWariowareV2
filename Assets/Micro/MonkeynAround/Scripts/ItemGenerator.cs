@@ -14,7 +14,10 @@ namespace Game.MonkeynAround
         public enum currentDifficulty { difficulty1, difficulty2, difficulty3 };
         [SerializeField] currentDifficulty currDifficulty;
 
-
+        private void Start()
+        {
+            Macro.StartGame();
+        }
         protected override void OnGameStart()
         {
             base.OnGameStart();
@@ -61,8 +64,8 @@ namespace Game.MonkeynAround
         protected override void OnTimerEnd()
         {
             base.OnTimerEnd();
-            Macro.EndGame();
             Macro.Win();
+            Macro.EndGame();
         }
     }
 }

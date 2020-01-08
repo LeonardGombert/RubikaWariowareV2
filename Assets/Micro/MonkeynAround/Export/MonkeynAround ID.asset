@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: MonkeynAround ID
   m_EditorClassIdentifier: 
   gameName: Monkey n' Around
-  description: 
-  verb: 
+  description: Slam coconuts but not the monkeys
+  verb: Slam!
   serieConstraints: 0
   scene:
     m_SceneAsset: {fileID: 102900000, guid: 412990d1657ffec46839402e738375b9, type: 3}
-    m_SceneName: ExportScene
+    m_SceneName: MonkeynAroundScene
   designer: "L\xE9onard Gombert"
   programmer: Matthieu Chapeland
   thumbnail: {fileID: 0}

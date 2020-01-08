@@ -52,6 +52,7 @@ namespace Game.Focus
             foregroundGameobject = GameObject.Find("Foreground");
             middlegroundGameobject = GameObject.Find("Middleground");
             backgroundGameobject = GameObject.Find("Background");
+            targetPlane = GameObject.FindGameObjectWithTag("Player");
 
             generalCam = GameObject.Find("DOFCamera").GetComponent<DepthOfField>();
             focusPointTransform = GameObject.Find("FocusPoint").GetComponent<Transform>();
@@ -69,7 +70,7 @@ namespace Game.Focus
 
             foreToMidDistance = middlegroundGameobject.transform.position.z + foregroundGameobject.transform.position.z;
             midToBackDistance = backgroundGameobject.transform.position.z - middlegroundGameobject.transform.position.z;
-           // Macro.StartGame();
+            Macro.StartGame();
         }
 
         private void Update()
@@ -92,6 +93,7 @@ namespace Game.Focus
         protected override void OnTimerEnd()
         {
             Macro.EndGame();
+            Macro.Lose();
             base.OnTimerEnd();
         }
 
@@ -188,20 +190,20 @@ namespace Game.Focus
             {
                 if(targetPlane == foregroundGameobject)
                 {
-                    if (focusPointCurrentDepth >= foregroundGameobject.transform.position.z && focusPointCurrentDepth <= foreGroundMargin) Macro.Win();
-                    else Macro.Lose();
+                    if (focusPointCurrentDepth >= foregroundGameobject.transform.position.z && focusPointCurrentDepth <= foreGroundMargin) { Macro.EndGame(); Macro.Win(); }
+                    else { Macro.EndGame(); Macro.Lose(); }
                 }
 
                 if (targetPlane == middlegroundGameobject)
                 {
-                    if (focusPointCurrentDepth >= middleGroundMargin1 && focusPointCurrentDepth <= middleGroundMargin2) Macro.Win();
-                    else Macro.Lose();
+                    if (focusPointCurrentDepth >= middleGroundMargin1 && focusPointCurrentDepth <= middleGroundMargin2) { Macro.EndGame(); Macro.Win(); }
+                    else { Macro.EndGame(); Macro.Lose(); }
                 }
 
                 else if (targetPlane == backgroundGameobject)
                 {
-                    if (focusPointCurrentDepth >= backGroundMargin && focusPointCurrentDepth <= backgroundGameobject.transform.position.z) Macro.Win();
-                    else Macro.Lose();
+                    if (focusPointCurrentDepth >= backGroundMargin && focusPointCurrentDepth <= backgroundGameobject.transform.position.z) { Macro.EndGame(); Macro.Win(); }
+                    else { Macro.EndGame(); Macro.Lose(); }
                 }
             }
         }
