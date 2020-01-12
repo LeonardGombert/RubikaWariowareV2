@@ -7,7 +7,7 @@ namespace Game.MonkeynAround
 {
     public class ItemGenerator : MicroMonoBehaviour
     {
-        [SerializeField] List<GameObject> difficulty1List = new List<GameObject>();
+        [SerializeField] GameObject coconut;
         [SerializeField] List<GameObject> difficulty2List = new List<GameObject>();
         [SerializeField] List<GameObject> difficulty3List = new List<GameObject>();
         int beatsPassed;
@@ -29,7 +29,7 @@ namespace Game.MonkeynAround
         protected override void OnGameStart()
         {
             base.OnGameStart();
-            Macro.DisplayActionVerb("SLAM !", 3);
+            Macro.DisplayActionVerb("SLAM COCONUTS!", 3);
             if (Macro.Difficulty == 1) currDifficulty = currentDifficulty.difficulty1;
             if (Macro.Difficulty == 2) currDifficulty = currentDifficulty.difficulty2;
             if (Macro.Difficulty == 3) currDifficulty = currentDifficulty.difficulty3;
@@ -56,7 +56,7 @@ namespace Game.MonkeynAround
                 case currentDifficulty.difficulty1:
                     if (beatsPassed >= 3)
                     {
-                        Instantiate(difficulty1List[Random.Range(0, difficulty1List.Count)], this.transform.position, Quaternion.identity);
+                        Instantiate(coconut, this.transform.position, Quaternion.identity);
                         beatsPassed = 0;
                     }
                     break;

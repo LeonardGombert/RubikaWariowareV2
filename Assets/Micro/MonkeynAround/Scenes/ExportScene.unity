@@ -690,8 +690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd082502e5cd9894b92df0f94d3cc224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty1List:
-  - {fileID: 7748175261534956848, guid: 7547391e7eea91547a0fa403e47e6f13, type: 3}
+  coconut: {fileID: 7748175261534956848, guid: 7547391e7eea91547a0fa403e47e6f13, type: 3}
   difficulty2List:
   - {fileID: 7748175261534956848, guid: 7547391e7eea91547a0fa403e47e6f13, type: 3}
   - {fileID: 7748175261534956848, guid: 7547391e7eea91547a0fa403e47e6f13, type: 3}
@@ -703,7 +702,6 @@ MonoBehaviour:
   - {fileID: 7748175261534956848, guid: 7547391e7eea91547a0fa403e47e6f13, type: 3}
   - {fileID: 7748175261534956848, guid: 02ac8423744eba04a867b234dcbce383, type: 3}
   currDifficulty: 2
-  hasLost: 0
 --- !u!4 &1900921864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 777079545021023140, guid: ddde71e803ea4ef458216905647929d6,

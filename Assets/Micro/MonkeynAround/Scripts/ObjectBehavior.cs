@@ -90,6 +90,23 @@ namespace Game.MonkeynAround
             if (Mathf.Round(transform.position.x) == target.transform.position.x) Destroy(gameObject);
         }
 
+        private void MoveOffScreen()
+        {
+            time += Time.deltaTime;
+
+            change = targetPosition - startPosition;
+
+            if (time <= duration)
+            {
+                transform.position = new Vector2(TweenManager.LinearTween(time, startPosition.x, change.x, durationForTrash), TweenManager.LinearTween(time, startPosition.y, change.y, durationForTrash));
+            }
+
+            if (time >= duration)
+            {
+                if (Mathf.Round(transform.position.x) == targetPosition.x) Destroy(gameObject);
+            }
+        }
+
         void OnTriggerEnter2D(Collider2D collision)
         {
             //SLAMMING OBJECTS
@@ -138,7 +155,10 @@ namespace Game.MonkeynAround
             if (collision.gameObject.name == "Grinder" && this.gameObject.name == "DONT DESTROY")
             {
                 //Launch monkey anim
-                Destroy(gameObject);
+                startPosition = transform.position;
+                targetPosition = new Vector2(transform.position.x + 50, transform.position.y);
+                time = 0f;
+                MoveOffScreen();
             }
         }
     }
