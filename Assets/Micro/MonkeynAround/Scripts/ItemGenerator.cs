@@ -14,10 +14,18 @@ namespace Game.MonkeynAround
         public enum currentDifficulty { difficulty1, difficulty2, difficulty3 };
         [SerializeField] currentDifficulty currDifficulty;
 
+        GameObject endCheck;
+        GameObject endCross;
+        
         private void Start()
         {
+            endCheck = GameObject.Find("EndCheck");
+            endCheck.gameObject.SetActive(false);
+            endCross = GameObject.Find("EndCross");
+            endCross.gameObject.SetActive(false);
             Macro.StartGame();
         }
+
         protected override void OnGameStart()
         {
             base.OnGameStart();
@@ -26,6 +34,16 @@ namespace Game.MonkeynAround
             if (Macro.Difficulty == 2) currDifficulty = currentDifficulty.difficulty2;
             if (Macro.Difficulty == 3) currDifficulty = currentDifficulty.difficulty3;
             Macro.StartTimer(15);
+        }
+
+        private void Update()
+        {
+
+        }
+
+        void Lost()
+        {
+            endCross.gameObject.SetActive(true);
         }
 
         protected override void OnBeat()
@@ -63,6 +81,7 @@ namespace Game.MonkeynAround
 
         protected override void OnTimerEnd()
         {
+            endCheck.gameObject.SetActive(true);
             base.OnTimerEnd();
             Macro.Win();
             Macro.EndGame();

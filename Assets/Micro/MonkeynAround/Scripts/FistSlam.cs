@@ -19,11 +19,17 @@ namespace Game.MonkeynAround
         [SerializeField] Vector3 targetPosition;
         [SerializeField] float duration;
 
+        [SerializeField] Sprite armsUp;
+        [SerializeField] Sprite armsDown;
+        SpriteRenderer gorillaSr;
+        [SerializeField] SpriteRenderer slamSr;
+
         // Start is called before the first frame update
         void Start()
         {
             startPosition = transform.position;
             targetPosition = target.transform.position;
+            gorillaSr = GetComponentInChildren<SpriteRenderer>();
         }
 
         // Update is called once per frame
@@ -33,12 +39,15 @@ namespace Game.MonkeynAround
 
             if (slamming)
             {
+                gorillaSr.sprite = armsDown;
+                gorillaSr.sortingOrder = 9;
                 change = targetPosition - startPosition;
 
                 if (time <= duration)
                 {
                     time += Time.deltaTime;
                     transform.position = new Vector2(targetPosition.x, TweenManager.LinearTween(time, startPosition.y, change.y, duration));
+                    slamSr.enabled = true;
                 }
 
                 if (time >= duration)
@@ -47,6 +56,13 @@ namespace Game.MonkeynAround
                     transform.position = startPosition;
                     time = 0f;
                 }
+            }
+
+            else
+            {
+                gorillaSr.sprite = armsUp;
+                gorillaSr.sortingOrder = 1;
+                slamSr.enabled = false;
             }
         }
     }
