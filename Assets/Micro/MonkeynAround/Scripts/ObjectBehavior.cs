@@ -57,12 +57,35 @@ namespace Game.MonkeynAround
 
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.name == "Fists" && this.gameObject.name == "COCONUT") Destroy(gameObject);
+            if (collision.gameObject.name == "Fists" && this.gameObject.name == "COCONUT")
+            {
+                this.gameObject.name = "BROKEN COCONUT";
+                //switch sprites
+            }
+
             if (collision.gameObject.name == "Fists" && gameObject.name == "DONT DESTROY")
             {
                 Debug.Log("You Lose");
                 Macro.Lose();
                 Macro.EndGame();
+            }
+
+            if(collision.gameObject.name == "Grinder" && this.gameObject.name == "COCONUT")
+            {
+                Debug.Log("You Lose");
+                Macro.Lose();
+                Macro.EndGame();
+            }
+
+            if (collision.gameObject.name == "Grinder" && this.gameObject.name == "BROKEN COCONUT")
+            {
+                //Launch coconut enter anim
+                Destroy(gameObject);
+            }
+
+            if (collision.gameObject.name == "Grinder" && this.gameObject.name == "DONT DESTROY")
+            {
+                //Launch monkey anim
             }
         }
     }

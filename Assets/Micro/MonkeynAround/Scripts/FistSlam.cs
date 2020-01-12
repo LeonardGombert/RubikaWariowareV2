@@ -41,24 +41,10 @@ namespace Game.MonkeynAround
                     transform.position = new Vector2(targetPosition.x, TweenManager.LinearTween(time, startPosition.y, change.y, duration));
                 }
 
-                if (time >= duration && new Vector3(transform.position.x, Mathf.Round(transform.position.y)) == targetPosition)
+                if (time >= duration)
                 {
-                    Vector2 temp = targetPosition;
-                    targetPosition = startPosition;
-                    startPosition = temp;
-                    hasSlammed = true;
-                    time = 0f;
-                }
-
-                if (hasSlammed && new Vector3(transform.position.x, Mathf.Round(transform.position.y)) == initialPosition.transform.position)
-                {
-                    Vector2 temp = startPosition;
-                    startPosition = targetPosition;
-                    targetPosition = temp;
-
-                    transform.position = new Vector3(transform.position.x, Mathf.Round(transform.position.y));
-                    hasSlammed = false;
                     slamming = false;
+                    transform.position = startPosition;
                     time = 0f;
                 }
             }
