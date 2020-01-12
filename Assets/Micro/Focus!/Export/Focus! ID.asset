@@ -17,7 +17,7 @@ MonoBehaviour:
   verb: Focus!
   serieConstraints: 0
   scene:
-    m_SceneAsset: {fileID: 102900000, guid: 9f1a1ee91f6a5d540b458234f71c1030, type: 3}
+    m_SceneAsset: {fileID: 0}
     m_SceneName: Focus!Scene
   designer: "L\xE9onard Gombert"
   programmer: Corto Pavie

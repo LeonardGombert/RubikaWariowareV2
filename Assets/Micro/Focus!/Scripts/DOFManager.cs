@@ -190,20 +190,44 @@ namespace Game.Focus
             {
                 if(targetPlane == foregroundGameobject)
                 {
-                    if (focusPointCurrentDepth >= foregroundGameobject.transform.position.z && focusPointCurrentDepth <= foreGroundMargin) { Macro.EndGame(); Macro.Win(); }
-                    else { Macro.EndGame(); Macro.Lose(); }
+                    if (focusPointCurrentDepth >= foregroundGameobject.transform.position.z && focusPointCurrentDepth <= foreGroundMargin)
+                    {
+                        Macro.EndGame();
+                        Macro.Win();
+                    }
+
+                    else
+                    {
+                        Macro.EndGame();
+                        Macro.Lose();
+                    }
                 }
 
-                if (targetPlane == middlegroundGameobject)
+                else if (targetPlane == middlegroundGameobject)
                 {
-                    if (focusPointCurrentDepth >= middleGroundMargin1 && focusPointCurrentDepth <= middleGroundMargin2) { Macro.EndGame(); Macro.Win(); }
-                    else { Macro.EndGame(); Macro.Lose(); }
+                    if (focusPointCurrentDepth >= middleGroundMargin1 && focusPointCurrentDepth <= middleGroundMargin2)
+                    {
+                        Macro.EndGame(); Macro.Win();
+                    }
+                    else {
+                        Macro.EndGame();
+                        Macro.Lose();
+                    }
                 }
 
                 else if (targetPlane == backgroundGameobject)
                 {
-                    if (focusPointCurrentDepth >= backGroundMargin && focusPointCurrentDepth <= backgroundGameobject.transform.position.z) { Macro.EndGame(); Macro.Win(); }
-                    else { Macro.EndGame(); Macro.Lose(); }
+                    if (focusPointCurrentDepth >= backGroundMargin && focusPointCurrentDepth <= backgroundGameobject.transform.position.z)
+                    {
+                        Macro.EndGame();
+                        Macro.Win();
+                    }
+
+                    else
+                    {
+                        Macro.EndGame();
+                        Macro.Lose();
+                    }
                 }
             }
         }

@@ -327,7 +327,6 @@ GameObject:
   - component: {fileID: 238922766}
   - component: {fileID: 238922765}
   - component: {fileID: 238922763}
-  - component: {fileID: 238922764}
   m_Layer: 0
   m_Name: DOFCamera
   m_TagString: Untagged
@@ -365,14 +364,6 @@ MonoBehaviour:
   dx11BokehTexture: {fileID: 2800000, guid: a4cdca73d61814d33ac1587f6c163bca, type: 3}
   dx11BokehScale: 1.2
   dx11BokehIntensity: 2.5
---- !u!81 &238922764
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 238922762}
-  m_Enabled: 1
 --- !u!20 &238922765
 Camera:
   m_ObjectHideFlags: 0
