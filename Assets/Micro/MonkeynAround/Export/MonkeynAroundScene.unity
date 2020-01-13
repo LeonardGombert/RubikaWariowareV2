@@ -531,7 +531,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975110921}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.8, y: -6.77, z: 0}
+  m_LocalPosition: {x: 5.8, y: -5.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 218838412}
@@ -701,7 +701,7 @@ MonoBehaviour:
   - {fileID: 7748175261534956848, guid: 7547391e7eea91547a0fa403e47e6f13, type: 3}
   - {fileID: 7748175261534956848, guid: 7547391e7eea91547a0fa403e47e6f13, type: 3}
   - {fileID: 7748175261534956848, guid: 02ac8423744eba04a867b234dcbce383, type: 3}
-  currDifficulty: 2
+  currDifficulty: 0
 --- !u!4 &1900921864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 777079545021023140, guid: ddde71e803ea4ef458216905647929d6,

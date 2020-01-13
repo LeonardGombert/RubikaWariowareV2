@@ -92,19 +92,21 @@ namespace Game.MonkeynAround
 
         private void MoveOffScreen()
         {
-            time += Time.deltaTime;
+            /*time += Time.deltaTime;
 
             change = targetPosition - startPosition;
 
             if (time <= duration)
             {
-                transform.position = new Vector2(TweenManager.LinearTween(time, startPosition.x, change.x, durationForTrash), TweenManager.LinearTween(time, startPosition.y, change.y, durationForTrash));
+                transform.position = new Vector2(TweenManager.LinearTween(time, startPosition.x, change.x, durationForTrash), 
+                    TweenManager.LinearTween(time, startPosition.y, change.y, durationForTrash));
             }
 
             if (time >= duration)
             {
                 if (Mathf.Round(transform.position.x) == targetPosition.x) Destroy(gameObject);
-            }
+            }*/
+            transform.position += Vector3.right;
         }
 
         void OnTriggerEnter2D(Collider2D collision)

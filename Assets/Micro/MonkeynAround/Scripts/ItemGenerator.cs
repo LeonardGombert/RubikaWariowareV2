@@ -16,13 +16,17 @@ namespace Game.MonkeynAround
 
         GameObject endCheck;
         GameObject endCross;
-        
-        private void Start()
+
+        private void Awake()
         {
             endCheck = GameObject.Find("EndCheck");
-            endCheck.gameObject.SetActive(false);
             endCross = GameObject.Find("EndCross");
+            endCheck.gameObject.SetActive(false);
             endCross.gameObject.SetActive(false);
+        }
+
+        private void Start()
+        {
             Macro.StartGame();
         }
 
@@ -32,8 +36,8 @@ namespace Game.MonkeynAround
             base.OnGameStart();
             Macro.DisplayActionVerb("SLAM COCONUTS!", 3);
             if (Macro.Difficulty == 1) currDifficulty = currentDifficulty.difficulty1;
-            if (Macro.Difficulty == 2) currDifficulty = currentDifficulty.difficulty2;
-            if (Macro.Difficulty == 3) currDifficulty = currentDifficulty.difficulty3;
+            else if (Macro.Difficulty == 2) currDifficulty = currentDifficulty.difficulty2;
+            else if (Macro.Difficulty == 3) currDifficulty = currentDifficulty.difficulty3;
             Macro.StartTimer(15);
         }
 
@@ -57,7 +61,7 @@ namespace Game.MonkeynAround
                 case currentDifficulty.difficulty1:
                     if (beatsPassed >= 3)
                     {
-                        Instantiate(coconut, this.transform.position, Quaternion.identity);
+                        Instantiate(coconut, this.transform.position, Quaternion.identity, gameObject.transform);
                         beatsPassed = 0;
                     }
                     break;
