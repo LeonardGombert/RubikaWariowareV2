@@ -33,7 +33,8 @@ namespace Game.Focus
         //OTHER OBJECTS TO ASSIGN
         GameObject targetPlane;
         DepthOfField generalCam;
-        Transform focusPointTransform;
+        GameObject focusPoint;
+        AudioSource autoFocus;
         [SerializeField] Image cameraHudCenter;
 
         //MARGIN AND DEPTH VALUES
@@ -45,6 +46,7 @@ namespace Game.Focus
         float middleGroundMargin2;
         float backGroundMargin;
         [SerializeField][Range(0, 100)] float focusDepthPercentage;
+        float test;
 
         bool hasTime = false;
         int beatsPassed;
@@ -59,11 +61,10 @@ namespace Game.Focus
             targetPlane = GameObject.FindGameObjectWithTag("Player");
 
             generalCam = GameObject.Find("DOFCamera").GetComponent<DepthOfField>();
-            focusPointTransform = GameObject.Find("FocusPoint").GetComponent<Transform>();
-        }
+            focusPoint = GameObject.Find("FocusPoint");
 
-        void Start()
-        {
+            autoFocus = focusPoint.GetComponent<AudioSource>();
+
             basePosition1 = foregroundGameobject.transform.position;
             basePosition2 = middlegroundGameobject.transform.position;
             basePosition3 = backgroundGameobject.transform.position;
@@ -74,7 +75,13 @@ namespace Game.Focus
 
             foreToMidDistance = middlegroundGameobject.transform.position.z + foregroundGameobject.transform.position.z;
             midToBackDistance = backgroundGameobject.transform.position.z - middlegroundGameobject.transform.position.z;
+            test = autoFocus.pitch;
+        }
+
+        void Start()
+        {
             Macro.StartGame();
+            autoFocus.pitch = 1.5f / focusTweenDuration;
         }
 
         private void Update()
@@ -153,15 +160,12 @@ namespace Game.Focus
         {
             base.OnBeat();
             beatsPassed++;
-
-            Debug.Log(Macro.TimeBeforeNextBeat);
-
+            
             if (!hasTime)
             {
                 float timeToNextBeat = (float)Macro.TimeSinceLastBeat;
                 float timeToTwoBeats = timeToNextBeat * 2;
                 focusTweenDuration = timeToTwoBeats;
-                Debug.Log(focusTweenDuration);
                 hasTime = true;
             }
 
@@ -177,8 +181,8 @@ namespace Game.Focus
 
         void ConvertPositionToDOF()
         {
-            generalCam.focalTransform = focusPointTransform;
-            focusPointCurrentDepth = focusPointTransform.transform.position.z;
+            generalCam.focalTransform = focusPoint.transform;
+            focusPointCurrentDepth = focusPoint.transform.position.z;
             tweenTimeValue += Time.deltaTime;
         }
 
@@ -188,7 +192,7 @@ namespace Game.Focus
 
             if (tweenTimeValue <= focusTweenDuration)
             {
-                focusPointTransform.position = 
+                focusPoint.transform.position = 
                     new Vector3(0, TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.y, distanceToEnd.y, focusTweenDuration), 
                     TweenManager.EaseInOutQuint(tweenTimeValue, startPosition.z, distanceToEnd.z, focusTweenDuration));
             }
@@ -242,12 +246,14 @@ namespace Game.Focus
             {
                 if(isOnTarget == true)
                 {
+                    Debug.Log("I win");
                     Macro.EndGame();
                     Macro.Win();
                 }
                 
                 else
                 {
+                    Debug.Log("I Lose");
                     Macro.EndGame();
                     Macro.Lose();
                 }
