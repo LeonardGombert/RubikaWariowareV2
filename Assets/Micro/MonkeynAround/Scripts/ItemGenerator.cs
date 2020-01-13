@@ -28,6 +28,7 @@ namespace Game.MonkeynAround
 
         protected override void OnGameStart()
         {
+            Debug.Log("Salut");
             base.OnGameStart();
             Macro.DisplayActionVerb("SLAM COCONUTS!", 3);
             if (Macro.Difficulty == 1) currDifficulty = currentDifficulty.difficulty1;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 using Sirenix.OdinInspector;
+using System;
+using UnityEngine.UI;
 
 namespace Game.Focus
 {
@@ -26,11 +28,13 @@ namespace Game.Focus
         Vector3 basePosition1;
         Vector3 basePosition2;
         Vector3 basePosition3;
+        bool isOnTarget;
 
         //OTHER OBJECTS TO ASSIGN
         GameObject targetPlane;
         DepthOfField generalCam;
         Transform focusPointTransform;
+        [SerializeField] Image cameraHudCenter;
 
         //MARGIN AND DEPTH VALUES
         float foreToMidDistance;
@@ -75,10 +79,58 @@ namespace Game.Focus
 
         private void Update()
         {
-            ConvertPositionToDOFAndOtherFunc();
+            CheckFocusPointPosition();
+            ConvertPositionToDOF();
             TweenLerpFocusPoint();
             ConvertCameraDepthToPercentage();
             PlayerInputs();
+        }
+
+        private void CheckFocusPointPosition()
+        {
+            if (targetPlane == foregroundGameobject)
+            {
+                if (focusPointCurrentDepth >= foregroundGameobject.transform.position.z && focusPointCurrentDepth <= foreGroundMargin)
+                {
+                    cameraHudCenter.color = Color.green;
+                    isOnTarget = true;
+                }
+
+                else
+                {
+                    cameraHudCenter.color = Color.white;
+                    isOnTarget = false;
+                }
+            }
+
+            else if (targetPlane == middlegroundGameobject)
+            {
+                if (focusPointCurrentDepth >= middleGroundMargin1 && focusPointCurrentDepth <= middleGroundMargin2)
+                {
+                    cameraHudCenter.color = Color.green;
+                    isOnTarget = true;
+                }
+                else
+                {
+                    cameraHudCenter.color = Color.white;
+                    isOnTarget = false;
+                }
+            }
+
+            else if (targetPlane == backgroundGameobject)
+            {
+                if (focusPointCurrentDepth >= backGroundMargin && focusPointCurrentDepth <= backgroundGameobject.transform.position.z)
+                {
+                    cameraHudCenter.color = Color.green;
+                    isOnTarget = true;
+                }
+
+                else
+                {
+                    cameraHudCenter.color = Color.white;
+                    isOnTarget = false;
+                }
+            }
         }
         #endregion
 
@@ -123,7 +175,7 @@ namespace Game.Focus
 
         #region //CUSTOM FUNCTIONS
 
-        void ConvertPositionToDOFAndOtherFunc()
+        void ConvertPositionToDOF()
         {
             generalCam.focalTransform = focusPointTransform;
             focusPointCurrentDepth = focusPointTransform.transform.position.z;
@@ -188,46 +240,16 @@ namespace Game.Focus
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if(targetPlane == foregroundGameobject)
+                if(isOnTarget == true)
                 {
-                    if (focusPointCurrentDepth >= foregroundGameobject.transform.position.z && focusPointCurrentDepth <= foreGroundMargin)
-                    {
-                        Macro.EndGame();
-                        Macro.Win();
-                    }
-
-                    else
-                    {
-                        Macro.EndGame();
-                        Macro.Lose();
-                    }
+                    Macro.EndGame();
+                    Macro.Win();
                 }
-
-                else if (targetPlane == middlegroundGameobject)
+                
+                else
                 {
-                    if (focusPointCurrentDepth >= middleGroundMargin1 && focusPointCurrentDepth <= middleGroundMargin2)
-                    {
-                        Macro.EndGame(); Macro.Win();
-                    }
-                    else {
-                        Macro.EndGame();
-                        Macro.Lose();
-                    }
-                }
-
-                else if (targetPlane == backgroundGameobject)
-                {
-                    if (focusPointCurrentDepth >= backGroundMargin && focusPointCurrentDepth <= backgroundGameobject.transform.position.z)
-                    {
-                        Macro.EndGame();
-                        Macro.Win();
-                    }
-
-                    else
-                    {
-                        Macro.EndGame();
-                        Macro.Lose();
-                    }
+                    Macro.EndGame();
+                    Macro.Lose();
                 }
             }
         }
