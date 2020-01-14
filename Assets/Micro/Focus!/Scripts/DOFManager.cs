@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 using Sirenix.OdinInspector;
 using System;
-using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace Game.Focus
 {
@@ -14,12 +14,23 @@ namespace Game.Focus
         [SerializeField] enum whereToMove { moveToFore, moveToMid, moveToBack, moveToMidb, moveToForeb };
         whereToMove moveToTarget;
         //TWEEN VALUES
-        [SerializeField] float focusTweenDuration;
+        float focusTweenDuration;
         float tweenTimeValue;
         Vector3 startPosition;
         Vector3 targetPosition;
         Vector3 endPosition;
         Vector3 distanceToEnd;
+
+        //VIGNETTE TWEEN VALUES
+        bool takePicture;
+        bool gameOver;
+        float vignetteDuration = 0.1f;
+        float vignetteTimeValue;
+        float vignetteTimeValue2;
+        float startVignetteValue = 0f;
+        float endVignetteValue = 1f;
+        [SerializeField] PostProcessVolume m_Volume;
+        UnityEngine.Rendering.PostProcessing.Vignette vignetteLayer = null;
 
         //GAMEOBJECTS INFO
         GameObject foregroundGameobject;
@@ -32,10 +43,13 @@ namespace Game.Focus
 
         //OTHER OBJECTS TO ASSIGN
         GameObject targetPlane;
-        DepthOfField generalCam;
+        GameObject cameraHUDOverlay;
+        UnityStandardAssets.ImageEffects.DepthOfField generalCam;
         GameObject focusPoint;
-        AudioSource autoFocus;
-        [SerializeField] Image cameraHudCenter;
+        AudioSource cameraAudioSource;
+        [SerializeField] UnityEngine.UI.Image cameraHudCenter;
+        [SerializeField] AudioClip cameraShutter;
+        [SerializeField] AudioClip cameraFocus;
 
         //MARGIN AND DEPTH VALUES
         float foreToMidDistance;
@@ -60,10 +74,14 @@ namespace Game.Focus
             backgroundGameobject = GameObject.Find("Background");
             targetPlane = GameObject.FindGameObjectWithTag("Player");
 
-            generalCam = GameObject.Find("DOFCamera").GetComponent<DepthOfField>();
+            cameraHUDOverlay = GameObject.Find("Camera HUD");
+
+            generalCam = GameObject.Find("DOFCamera").GetComponent<UnityStandardAssets.ImageEffects.DepthOfField>();
             focusPoint = GameObject.Find("FocusPoint");
 
-            autoFocus = focusPoint.GetComponent<AudioSource>();
+            cameraAudioSource = focusPoint.GetComponent<AudioSource>();
+            cameraAudioSource.clip = cameraFocus;
+            cameraAudioSource.loop = true;
 
             basePosition1 = foregroundGameobject.transform.position;
             basePosition2 = middlegroundGameobject.transform.position;
@@ -75,24 +93,67 @@ namespace Game.Focus
 
             foreToMidDistance = middlegroundGameobject.transform.position.z + foregroundGameobject.transform.position.z;
             midToBackDistance = backgroundGameobject.transform.position.z - middlegroundGameobject.transform.position.z;
-            test = autoFocus.pitch;
+            test = cameraAudioSource.pitch;
+            cameraAudioSource.Play();
         }
 
         void Start()
         {
             Macro.StartGame();
-            autoFocus.pitch = 1.5f / focusTweenDuration;
+            cameraAudioSource.pitch = 1.5f / focusTweenDuration;
         }
 
         private void Update()
         {
-            CheckFocusPointPosition();
-            ConvertPositionToDOF();
-            TweenLerpFocusPoint();
-            ConvertCameraDepthToPercentage();
+            if(!gameOver)
+            {
+                CheckFocusPointPosition();
+                ConvertPositionToDOF();
+                TweenLerpFocusPoint();
+                ConvertCameraDepthToPercentage();
+            }
+
             PlayerInputs();
         }
+        #endregion
 
+        #region //MICROBEHAVIOR CALLBACKS
+        protected override void OnGameStart()
+        {
+            Macro.DisplayActionVerb("Focus !", 3);
+            Macro.StartTimer(16);
+            base.OnGameStart();
+        }   
+
+        protected override void OnTimerEnd()
+        {
+            Macro.EndGame();
+            Macro.Lose();
+            base.OnTimerEnd();
+        }
+
+        protected override void OnBeat()
+        {
+            base.OnBeat();
+            beatsPassed++;
+            
+            if (!hasTime)
+            {
+                float timeToNextBeat = (float)Macro.TimeSinceLastBeat;
+                float timeToTwoBeats = timeToNextBeat * 2;
+                focusTweenDuration = timeToTwoBeats;
+                hasTime = true;
+            }
+
+            if(beatsPassed == 2)
+            {
+                beatsPassed = 0;
+                hasTime = false;
+            }
+        }
+        #endregion
+
+        #region //CUSTOM FUNCTION
         private void CheckFocusPointPosition()
         {
             if (targetPlane == foregroundGameobject)
@@ -139,45 +200,6 @@ namespace Game.Focus
                 }
             }
         }
-        #endregion
-
-        #region //MICROBEHAVIOR CALLBACKS
-        protected override void OnGameStart()
-        {
-            Macro.DisplayActionVerb("Focus !", 3);
-            Macro.StartTimer(16);
-            base.OnGameStart();
-        }   
-
-        protected override void OnTimerEnd()
-        {
-            Macro.EndGame();
-            Macro.Lose();
-            base.OnTimerEnd();
-        }
-
-        protected override void OnBeat()
-        {
-            base.OnBeat();
-            beatsPassed++;
-            
-            if (!hasTime)
-            {
-                float timeToNextBeat = (float)Macro.TimeSinceLastBeat;
-                float timeToTwoBeats = timeToNextBeat * 2;
-                focusTweenDuration = timeToTwoBeats;
-                hasTime = true;
-            }
-
-            if(beatsPassed == 2)
-            {
-                beatsPassed = 0;
-                hasTime = false;
-            }
-        }
-        #endregion
-
-        #region //CUSTOM FUNCTIONS
 
         void ConvertPositionToDOF()
         {
@@ -244,7 +266,13 @@ namespace Game.Focus
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if(isOnTarget == true)
+                cameraAudioSource.clip = cameraShutter;
+                cameraAudioSource.loop = false;
+                cameraAudioSource.Play();
+
+                takePicture = true;
+
+                if (isOnTarget == true)
                 {
                     Debug.Log("I win");
                     Macro.EndGame();
@@ -256,6 +284,37 @@ namespace Game.Focus
                     Debug.Log("I Lose");
                     Macro.EndGame();
                     Macro.Lose();
+                }
+            }
+            
+            //VIGNETTE EFFECT
+            m_Volume.profile.TryGetSettings(out vignetteLayer);
+            float distanceToMax = endVignetteValue - startVignetteValue;
+            float distanceToMax2 = startVignetteValue - endVignetteValue;
+            
+            if (takePicture)
+            {
+                vignetteLayer.enabled.value = true;
+
+                if (vignetteTimeValue <= vignetteDuration)
+                {
+                    vignetteLayer.intensity.value = TweenManager.EaseInOutQuad(vignetteTimeValue, startVignetteValue, distanceToMax, vignetteDuration);
+                    vignetteTimeValue += Time.deltaTime;
+                }
+
+                if (vignetteTimeValue >= vignetteDuration)
+                {
+                    vignetteLayer.intensity.value = TweenManager.EaseInOutQuad(vignetteTimeValue2, endVignetteValue, distanceToMax2, vignetteDuration);
+                    vignetteTimeValue2 += Time.deltaTime;
+                }
+
+                if (vignetteTimeValue2 >= vignetteDuration)
+                {
+                    vignetteTimeValue = 0f;
+                    vignetteTimeValue2 = 0f;
+                    takePicture = false;
+                    gameOver = true;
+                    cameraHUDOverlay.SetActive(false);
                 }
             }
         }
