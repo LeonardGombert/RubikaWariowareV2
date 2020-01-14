@@ -13,6 +13,9 @@ namespace Game.Focus
         #region //VARIABLE DECLARATIONS
         [SerializeField] enum whereToMove { moveToFore, moveToMid, moveToBack, moveToMidb, moveToForeb };
         whereToMove moveToTarget;
+        float timepassedToGameEnd;
+        [SerializeField] float timeToEndGame;
+        
         //TWEEN VALUES
         float focusTweenDuration;
         float tweenTimeValue;
@@ -114,6 +117,8 @@ namespace Game.Focus
             }
 
             PlayerInputs();
+
+            if (gameOver) GameEndTimer();
         }
         #endregion
 
@@ -274,15 +279,13 @@ namespace Game.Focus
 
                 if (isOnTarget == true)
                 {
-                    Debug.Log("I win");
-                    Macro.EndGame();
+                    //LAUNCH WIN ANIM
                     Macro.Win();
                 }
                 
                 else
                 {
-                    Debug.Log("I Lose");
-                    Macro.EndGame();
+                    //LAUNCH LOSE ANIM
                     Macro.Lose();
                 }
             }
@@ -316,6 +319,17 @@ namespace Game.Focus
                     gameOver = true;
                     cameraHUDOverlay.SetActive(false);
                 }
+            }
+        }
+
+        void GameEndTimer()
+        {
+            timepassedToGameEnd += Time.deltaTime;
+
+            if (timepassedToGameEnd >= timeToEndGame)
+            {
+                Macro.EndGame();
+                timeToEndGame = 0f;
             }
         }
         #endregion
