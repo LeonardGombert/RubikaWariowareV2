@@ -51,6 +51,13 @@ namespace Game.Focus
         [SerializeField] AudioClip cameraShutter;
         [SerializeField] AudioClip cameraFocus;
 
+        [SerializeField] GameObject Picture1;
+        [SerializeField] GameObject Picture2;
+        [SerializeField] GameObject Picture3;
+
+        [SerializeField] GameObject WinSprite;
+        [SerializeField] GameObject LoseSprite;
+
         //MARGIN AND DEPTH VALUES
         float foreToMidDistance;
         float midToBackDistance;
@@ -62,6 +69,8 @@ namespace Game.Focus
         [SerializeField][Range(0, 100)] float focusDepthPercentage;
         float test;
 
+        float timeLeftUI = 0.5f;
+        float timeLeft = 2f;
         bool hasTime = false;
         int beatsPassed;
         #endregion
@@ -69,6 +78,11 @@ namespace Game.Focus
         #region //MONOBEHAVIOR CALLBACKS
         private void Awake()
         {
+            int whichLayer = UnityEngine.Random.Range(0, 3);
+            if (whichLayer == 0) Picture1.SetActive(true);
+            if (whichLayer == 1) Picture2.SetActive(true);
+            if (whichLayer == 2) Picture3.SetActive(true);
+
             foregroundGameobject = GameObject.Find("Foreground");
             middlegroundGameobject = GameObject.Find("Middleground");
             backgroundGameobject = GameObject.Find("Background");
@@ -105,7 +119,7 @@ namespace Game.Focus
 
         private void Update()
         {
-            if(!gameOver)
+            if (!gameOver)
             {
                 CheckFocusPointPosition();
                 ConvertPositionToDOF();
@@ -113,7 +127,23 @@ namespace Game.Focus
                 ConvertCameraDepthToPercentage();
             }
 
+            else if(gameOver)
+            {
+                timeLeftUI -= Time.deltaTime;
+                if (timeLeftUI < 0)
+                {
+                    LoseSprite.gameObject.SetActive(false);
+                    WinSprite.gameObject.SetActive(false);
+                }
+                cameraAudioSource.Stop();
+                timeLeft -= Time.deltaTime;
+                if (timeLeft < 0)
+                {
+                    Macro.EndGame();
+                }
+            }
             PlayerInputs();
+
         }
         #endregion
 
@@ -127,9 +157,10 @@ namespace Game.Focus
 
         protected override void OnTimerEnd()
         {
+            base.OnTimerEnd();
+            gameOver = true;
             Macro.EndGame();
             Macro.Lose();
-            base.OnTimerEnd();
         }
 
         protected override void OnBeat()
@@ -274,16 +305,16 @@ namespace Game.Focus
 
                 if (isOnTarget == true)
                 {
-                    Debug.Log("I win");
-                    Macro.EndGame();
+                    WinSprite.gameObject.SetActive(true);
                     Macro.Win();
+                    gameOver = true;
                 }
                 
                 else
                 {
-                    Debug.Log("I Lose");
-                    Macro.EndGame();
+                    LoseSprite.gameObject.SetActive(true);
                     Macro.Lose();
+                    gameOver = true;
                 }
             }
             
