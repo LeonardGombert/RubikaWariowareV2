@@ -132,11 +132,13 @@ namespace Game.MonkeynAround
 
             if (collision.gameObject.name == "Fists" && gameObject.name == "DONT DESTROY")
             {
-                generator.gameObject.SendMessage("Lost");
-                Macro.Lose();
 
                 objectSFX.clip = monkeyHowl;
                 objectSFX.Play();
+
+                generator.gameObject.SendMessage("Lost");
+                Macro.Lose();
+                Macro.EndGame();
             }
 
             //CHECKS OR CROSSES
@@ -150,6 +152,7 @@ namespace Game.MonkeynAround
                 target.gameObject.SendMessage("Cross");
                 generator.gameObject.SendMessage("Lost");
                 Macro.Lose();
+                Macro.EndGame();
             }
 
             if (collision.gameObject.name == "Grinder" && this.gameObject.name == "BROKEN COCONUT")

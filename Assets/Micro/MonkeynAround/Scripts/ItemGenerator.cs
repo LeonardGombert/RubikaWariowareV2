@@ -17,8 +17,6 @@ namespace Game.MonkeynAround
         GameObject endCheck;
         GameObject endCross;
 
-        float timepassedToGameEnd;
-        float timeToEndGame = 2f;
         [ShowInInspector] public static bool gameOver;
         AudioSource audioSource;
 
@@ -49,11 +47,12 @@ namespace Game.MonkeynAround
 
         private void Update()
         {
-            if (gameOver == true) GameEndTimer();
+
         }
 
         void Lost()
         {
+            Macro.Lose();
             endCross.gameObject.SetActive(true);
             gameOver = true;
             audioSource.Play();
@@ -99,18 +98,9 @@ namespace Game.MonkeynAround
         {
             base.OnTimerEnd();
             endCheck.gameObject.SetActive(true);
+            gameOver = true;
             Macro.Win();
-            GameEndTimer();
-        }
-
-        void GameEndTimer()
-        {
-            timepassedToGameEnd += Time.deltaTime;
-
-            if (timepassedToGameEnd >= timeToEndGame)
-            {
-                Macro.EndGame();
-            }
+            Macro.EndGame();
         }
     }
 }
