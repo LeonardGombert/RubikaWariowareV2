@@ -17,12 +17,19 @@ namespace Game.MonkeynAround
         GameObject endCheck;
         GameObject endCross;
 
+        float timepassedToGameEnd;
+        float timeToEndGame = 2f;
+        [ShowInInspector] public static bool gameOver;
+        AudioSource audioSource;
+
         private void Awake()
         {
+            gameOver = false;
             endCheck = GameObject.Find("EndCheck");
             endCross = GameObject.Find("EndCross");
             endCheck.gameObject.SetActive(false);
             endCross.gameObject.SetActive(false);
+            audioSource = GetComponent<AudioSource>();
         }
 
         private void Start()
@@ -32,7 +39,6 @@ namespace Game.MonkeynAround
 
         protected override void OnGameStart()
         {
-            Debug.Log("Salut");
             base.OnGameStart();
             Macro.DisplayActionVerb("SLAM COCONUTS!", 3);
             if (Macro.Difficulty == 1) currDifficulty = currentDifficulty.difficulty1;
@@ -43,12 +49,14 @@ namespace Game.MonkeynAround
 
         private void Update()
         {
-
+            if (gameOver == true) GameEndTimer();
         }
 
         void Lost()
         {
             endCross.gameObject.SetActive(true);
+            gameOver = true;
+            audioSource.Play();
         }
 
         protected override void OnBeat()
@@ -56,40 +64,53 @@ namespace Game.MonkeynAround
             base.OnBeat();
             beatsPassed++;
 
-            switch(currDifficulty)
+            if(!gameOver)
             {
-                case currentDifficulty.difficulty1:
-                    if (beatsPassed >= 3)
-                    {
-                        Instantiate(coconut, this.transform.position, Quaternion.identity, gameObject.transform);
-                        beatsPassed = 0;
-                    }
-                    break;
-                case currentDifficulty.difficulty2:
-                    if (beatsPassed >= 2)
-                    {
-                        Instantiate(difficulty2List[Random.Range(0, difficulty2List.Count)], this.transform.position, Quaternion.identity);
-                        beatsPassed = 0;
-                    }
-                    break;
-                case currentDifficulty.difficulty3:
-                    if (beatsPassed >= 1)
-                    {
-                        Instantiate(difficulty3List[Random.Range(0, difficulty3List.Count)], this.transform.position, Quaternion.identity);
-                        beatsPassed = 0;
-                    }
-                    break;
-                default:
-                    break;
+                switch (currDifficulty)
+                {
+                    case currentDifficulty.difficulty1:
+                        if (beatsPassed >= 3)
+                        {
+                            Instantiate(coconut, this.transform.position, Quaternion.identity, gameObject.transform);
+                            beatsPassed = 0;
+                        }
+                        break;
+                    case currentDifficulty.difficulty2:
+                        if (beatsPassed >= 2)
+                        {
+                            Instantiate(difficulty2List[Random.Range(0, difficulty2List.Count)], this.transform.position, Quaternion.identity, gameObject.transform);
+                            beatsPassed = 0;
+                        }
+                        break;
+                    case currentDifficulty.difficulty3:
+                        if (beatsPassed >= 1)
+                        {
+                            Instantiate(difficulty3List[Random.Range(0, difficulty3List.Count)], this.transform.position, Quaternion.identity, gameObject.transform);
+                            beatsPassed = 0;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
         protected override void OnTimerEnd()
         {
-            endCheck.gameObject.SetActive(true);
             base.OnTimerEnd();
+            endCheck.gameObject.SetActive(true);
             Macro.Win();
-            Macro.EndGame();
+            GameEndTimer();
+        }
+
+        void GameEndTimer()
+        {
+            timepassedToGameEnd += Time.deltaTime;
+
+            if (timepassedToGameEnd >= timeToEndGame)
+            {
+                Macro.EndGame();
+            }
         }
     }
 }

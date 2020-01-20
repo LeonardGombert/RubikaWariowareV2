@@ -220,6 +220,10 @@ MonoBehaviour:
   durationForTrash: 2
   myType: 0
   intactCoconut: {fileID: 1108983468321643561}
+  pass: {fileID: 8300000, guid: 348b8ea293a484b44be27e49835650f6, type: 3}
+  fail: {fileID: 8300000, guid: 2e0feefcbd41076458620c9ec3f31e00, type: 3}
+  monkeyHowl: {fileID: 8300000, guid: ce8352924b3a74d4f8be721c5f313af4, type: 3}
+  coconutBreak: {fileID: 8300000, guid: 5351feb51a6f9a149b77d40f40426bef, type: 3}
 --- !u!61 &7800203825019097260
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -278,7 +282,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -7691738048644230328, guid: 89217b3787383ad458c03fd3020d74de,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 5351feb51a6f9a149b77d40f40426bef, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

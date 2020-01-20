@@ -37,40 +37,43 @@ namespace Game.MonkeynAround
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if(!ItemGenerator.gameOver)
             {
-                slamming = true;
-                slamSFX.Play();
-            }
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    slamming = true;
+                    slamSFX.Play();
+                }
 
                 if (slamming)
-            {
-                gorillaSr.sprite = armsDown;
-                gorillaSr.sortingOrder = 9;
-                change = targetPosition - startPosition;
-
-                if (time <= duration)
                 {
-                    time += Time.deltaTime;
-                    transform.position = new Vector2(targetPosition.x, TweenManager.LinearTween(time, startPosition.y, change.y, duration));
-                    slamSr.enabled = true;
+                    gorillaSr.sprite = armsDown;
+                    gorillaSr.sortingOrder = 9;
+                    change = targetPosition - startPosition;
+
+                    if (time <= duration)
+                    {
+                        time += Time.deltaTime;
+                        transform.position = new Vector2(targetPosition.x, TweenManager.LinearTween(time, startPosition.y, change.y, duration));
+                        slamSr.enabled = true;
+                    }
+
+                    if (time >= duration)
+                    {
+                        slamming = false;
+                        transform.position = startPosition;
+                        time = 0f;
+                    }
                 }
 
-                if (time >= duration)
+                else
                 {
-                    slamming = false;
-                    transform.position = startPosition;
-                    time = 0f;
+                    //slamSFX.Stop();
+                    gorillaSr.sprite = armsUp;
+                    gorillaSr.sortingOrder = 1;
+                    slamSr.enabled = false;
                 }
-            }
-
-            else
-            {
-
-                //slamSFX.Stop();
-                gorillaSr.sprite = armsUp;
-                gorillaSr.sortingOrder = 1;
-                slamSr.enabled = false;
             }
         }
     }

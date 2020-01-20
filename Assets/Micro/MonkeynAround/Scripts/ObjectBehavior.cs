@@ -31,6 +31,10 @@ namespace Game.MonkeynAround
         GameObject generator;
         ItemGenerator itemGen;
 
+        [SerializeField] AudioClip pass;
+        [SerializeField] AudioClip monkeyHowl;
+        [SerializeField] AudioClip coconutBreak;
+
         AudioSource objectSFX;
 
         bool _moveToTrash;
@@ -46,7 +50,7 @@ namespace Game.MonkeynAround
             rb2D = GetComponent<Rigidbody2D>();
             boxcoll2D = GetComponent<BoxCollider2D>();
             objectSFX = GetComponent<AudioSource>();
-
+            
             startPosition = transform.position;
             targetPosition = target.transform.position;
 
@@ -57,8 +61,11 @@ namespace Game.MonkeynAround
         // Update is called once per frame
         void Update()
         {
-            MoveToTarget();
-            if (_moveToTrash) MoveToTrash();
+            if(!ItemGenerator.gameOver)
+            {
+                MoveToTarget();
+                if (_moveToTrash) MoveToTrash();
+            }
         }
 
         private void MoveToTrash()
@@ -119,43 +126,43 @@ namespace Game.MonkeynAround
             {
                 this.gameObject.name = "BROKEN COCONUT";
                 intactCoconut.SetActive(false);
+                objectSFX.clip = coconutBreak;
                 objectSFX.Play();
             }
 
             if (collision.gameObject.name == "Fists" && gameObject.name == "DONT DESTROY")
             {
                 generator.gameObject.SendMessage("Lost");
-                objectSFX.Play();
                 Macro.Lose();
-                Macro.EndGame();
+
+                objectSFX.clip = monkeyHowl;
+                objectSFX.Play();
             }
 
             //CHECKS OR CROSSES
             if(collision.gameObject.name == "Grinder" && this.gameObject.name == "COCONUT")
             {
-                target.gameObject.SendMessage("Cross");
-
                 //Launch coconut enter anim
                 startPosition = transform.position;
                 time = 0f;
                 _moveToTrash = true;
 
-                //itemGen.hasLost = true;
-
+                target.gameObject.SendMessage("Cross");
                 generator.gameObject.SendMessage("Lost");
-                Debug.Log("You Lose");
                 Macro.Lose();
-                Macro.EndGame();
             }
 
             if (collision.gameObject.name == "Grinder" && this.gameObject.name == "BROKEN COCONUT")
             {
-                target.gameObject.SendMessage("Check");
-
                 //Launch coconut enter anim
                 startPosition = transform.position;
                 time = 0f;
                 _moveToTrash = true;
+
+                target.gameObject.SendMessage("Check");
+
+                objectSFX.clip = pass;
+                objectSFX.Play();
             }
 
             if (collision.gameObject.name == "Grinder" && this.gameObject.name == "DONT DESTROY")
@@ -165,6 +172,9 @@ namespace Game.MonkeynAround
                 targetPosition = new Vector2(transform.position.x + 50, transform.position.y);
                 time = 0f;
                 MoveOffScreen();
+
+                objectSFX.clip = pass;
+                objectSFX.Play();
             }
         }
     }
