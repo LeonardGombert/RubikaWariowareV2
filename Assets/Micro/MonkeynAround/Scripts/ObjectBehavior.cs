@@ -31,6 +31,8 @@ namespace Game.MonkeynAround
         GameObject generator;
         ItemGenerator itemGen;
 
+        AudioSource objectSFX;
+
         bool _moveToTrash;
 
         // Start is called before the first frame update
@@ -43,7 +45,8 @@ namespace Game.MonkeynAround
             itemGen = GetComponent<ItemGenerator>();
             rb2D = GetComponent<Rigidbody2D>();
             boxcoll2D = GetComponent<BoxCollider2D>();
-            
+            objectSFX = GetComponent<AudioSource>();
+
             startPosition = transform.position;
             targetPosition = target.transform.position;
 
@@ -116,12 +119,13 @@ namespace Game.MonkeynAround
             {
                 this.gameObject.name = "BROKEN COCONUT";
                 intactCoconut.SetActive(false);
+                objectSFX.Play();
             }
 
             if (collision.gameObject.name == "Fists" && gameObject.name == "DONT DESTROY")
             {
                 generator.gameObject.SendMessage("Lost");
-                Debug.Log("You Lose");
+                objectSFX.Play();
                 Macro.Lose();
                 Macro.EndGame();
             }

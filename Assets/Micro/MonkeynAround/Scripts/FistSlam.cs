@@ -23,6 +23,7 @@ namespace Game.MonkeynAround
         [SerializeField] Sprite armsDown;
         SpriteRenderer gorillaSr;
         [SerializeField] SpriteRenderer slamSr;
+        [SerializeField] AudioSource slamSFX;
 
         // Start is called before the first frame update
         void Start()
@@ -30,14 +31,19 @@ namespace Game.MonkeynAround
             startPosition = transform.position;
             targetPosition = target.transform.position;
             gorillaSr = GetComponentInChildren<SpriteRenderer>();
+            slamSFX = GetComponentInChildren<AudioSource>();
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space)) slamming = true;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                slamming = true;
+                slamSFX.Play();
+            }
 
-            if (slamming)
+                if (slamming)
             {
                 gorillaSr.sprite = armsDown;
                 gorillaSr.sortingOrder = 9;
@@ -60,6 +66,8 @@ namespace Game.MonkeynAround
 
             else
             {
+
+                //slamSFX.Stop();
                 gorillaSr.sprite = armsUp;
                 gorillaSr.sortingOrder = 1;
                 slamSr.enabled = false;
