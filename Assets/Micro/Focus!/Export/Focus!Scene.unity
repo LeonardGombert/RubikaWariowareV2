@@ -309,7 +309,7 @@ Transform:
   - {fileID: 2130856760}
   - {fileID: 955051547}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &229809076
 GameObject:
@@ -1484,62 +1484,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &2109857370
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2109857372}
-  - component: {fileID: 2109857371}
-  m_Layer: 0
-  m_Name: Debug
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2109857371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2109857370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48d023ed0546a6a40a5b91d6a0426fe3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadTime: 1
-  BPM: {fileID: 11400000, guid: ea40df186eb9b3647a5743549f9f4c16, type: 2}
-  BeatCount: {fileID: 11400000, guid: 575bb777fae36f145b33b9a58e9a04d6, type: 2}
-  Difficulty: {fileID: 11400000, guid: 3bb42ab7e49589445a310a0343fd7c8f, type: 2}
-  RemainingTime: {fileID: 0}
-  verbLoader: {fileID: 0}
-  gameState: {fileID: 0}
-  microActivator: {fileID: 0}
-  anchor: {x: 10, y: 10}
-  margin: 10
-  width: 200
-  lineHeight: 25
-  adjusment: 0
---- !u!4 &2109857372
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2109857370}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.0796335, y: 1.4013649, z: -6.889092}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2130856756
 GameObject:
   m_ObjectHideFlags: 0
@@ -2119,7 +2063,7 @@ GameObject:
   - component: {fileID: 8636820562445839425}
   m_Layer: 0
   m_Name: Middleground
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

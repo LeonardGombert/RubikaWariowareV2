@@ -81,6 +81,7 @@ namespace Game.Focus
         #region //MONOBEHAVIOR CALLBACKS
         private void Awake()
         {
+            timeToEndGame = 0f;
             int whichLayer = UnityEngine.Random.Range(0, 3);
             if (whichLayer == 0) Picture1.SetActive(true);
             if (whichLayer == 1) Picture2.SetActive(true);
@@ -147,7 +148,7 @@ namespace Game.Focus
             }
             PlayerInputs();
 
-            if (gameOver) GameEndTimer();
+            //if (gameOver) GameEndTimer();
         }
         #endregion
 
@@ -312,6 +313,7 @@ namespace Game.Focus
                     WinSprite.gameObject.SetActive(true);
                     Macro.Win();
                     gameOver = true;
+                    Macro.EndGame();
                 }
                 
                 else
@@ -319,6 +321,7 @@ namespace Game.Focus
                     LoseSprite.gameObject.SetActive(true);
                     Macro.Lose();
                     gameOver = true;
+                    Macro.EndGame();
                 }
             }
             
@@ -360,8 +363,8 @@ namespace Game.Focus
 
             if (timepassedToGameEnd >= timeToEndGame)
             {
+                Macro.Lose();
                 Macro.EndGame();
-                timeToEndGame = 0f;
             }
         }
         #endregion
